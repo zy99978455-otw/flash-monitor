@@ -30,3 +30,17 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+
+# --- Custom Rules ---
+
+# 配置文件 (包含密码，绝对不能上传)
+configs/config.yaml
+
+# IDE 配置文件
+.idea/
+.vscode/
+
+# 编译产物
+flash-monitor
+flash-monitor.exe
