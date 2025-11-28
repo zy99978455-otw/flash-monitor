@@ -57,11 +57,25 @@
 
 ---
 
+---
+
+## 📅 Phase 6: Kubernetes Orchestration (K8s 容器编排) ☸️
+**Status**: ⏳ Planned (规划中)
+**Goal**: Deploy the system into a local K8s cluster to simulate enterprise production environments.
+
+- [ ] **Image Registry**: Push Docker images to Docker Hub or Aliyun Registry. (镜像推送)
+- [ ] **K8s Config Management**: Migrate `config.yaml` to **ConfigMap** and `Secrets`. (配置迁移)
+- [ ] **App Deployment**: Write `Deployment.yaml` for FlashMonitor with 3 replicas. (多副本部署)
+- [ ] **Stateful Workloads**: Deploy MySQL & Redis using **StatefulSet** and **PVC** (Persistent Volume Claim). (有状态服务部署)
+- [ ] **Service Discovery**: Expose Adminer via **Service (NodePort/LoadBalancer)**. (服务暴露)
+- [ ] **Health Checks**: Configure Liveness and Readiness probes for the Go application. (健康检查)
+
 ## 🛠 Tech Stack (技术栈)
 * **Language**: Golang 1.20+
 * **Blockchain**: Go-Ethereum (Geth)
 * **Database**: MySQL 8.0
+* **Cache**: Redis 7.x
 * **ORM**: Gorm
 * **Config**: Viper
 * **Logging**: Zap
-* **Deployment**: Docker & Docker Compose
+* **Deployment**: Docker Compose & Kubernetes (K8s)
