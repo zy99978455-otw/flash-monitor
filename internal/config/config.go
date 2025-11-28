@@ -37,7 +37,11 @@ type DatabaseConfig struct {
 func InitConfig() {
 	viper.SetConfigName("config")   // 配置文件名 (不带后缀)
 	viper.SetConfigType("yaml")     // 文件类型
-	viper.AddConfigPath("./configs") // 查找路径 (相对于项目根目录)
+
+	// 添加多个搜索路径
+	viper.AddConfigPath("./configs")      // 场景 A: 在项目根目录运行 (go run cmd/monitor/main.go)
+	viper.AddConfigPath("../../configs")  // 场景 B: 在 cmd/monitor 
+	viper.AddConfigPath(".")              // 场景 C: 配置文件就在当前目录
 
 	// 读取配置
 	if err := viper.ReadInConfig(); err != nil {
