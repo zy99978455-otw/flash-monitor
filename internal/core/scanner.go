@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	myEth "github.com/zy99978455-otw/flash-monitor/pkg/ethereum"
 	"github.com/zy99978455-otw/flash-monitor/pkg/logger"
+	"github.com/zy99978455-otw/flash-monitor/internal/repository"
 	"go.uber.org/zap"
 )
 
@@ -61,9 +62,23 @@ func (s *Scanner) Scan(ctx context.Context, startHeight, endHeight uint64) {
 	)
 
 	for _, vLog := range logs {
-		logger.Log.Debug("发现一笔转账",
-			zap.String("TxHash", vLog.TxHash.Hex()),
-			zap.Uint64("Block", vLog.BlockNumber),
+		// 1. 解析
+		event := ParseTransferLog(vLog)
+		if event == nil {
+			continue
+		}
+
+		// 2. 入库 (新增!)
+		err := repository.SaveTransferEvent(event)
+		if err != nil {
+			logger.Log.Error("数据入库失败", zap.Error(err))
+			continue
+		}
+
+		// 3. 打印成功日志
+		logger.Log.Info("✅ 已存入 DB",
+			zap.String("Tx", event.TxHash),
+			zap.String("Amount", event.Amount),
 		)
 	}
 }
