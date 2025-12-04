@@ -14,3 +14,8 @@ func SaveTransferEvent(event *model.TransferEvent) error {
 	
 	return result.Error
 }
+
+// DeleteTransferEventsByBlock 删除指定区块高度的所有交易 (用于回滚)
+func DeleteTransferEventsByBlock(blockNumber uint64) error {
+	return DB.Where("block_number = ?", blockNumber).Delete(&model.TransferEvent{}).Error
+}

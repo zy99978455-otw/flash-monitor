@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"time"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 // Client 是对 ethclient.Client 的简单封装
@@ -41,4 +43,11 @@ func InitClient(rawUrl string) (*Client, error) {
 // GetBlockNumber 获取最新区块高度
 func (c *Client) GetBlockNumber(ctx context.Context) (uint64, error) {
 	return c.EthClient.BlockNumber(ctx)
+}
+
+// GetBlockHeader 获取区块头信息 (包含 Hash 和 ParentHash)
+func (c *Client) GetBlockHeader(ctx context.Context, number uint64) (*types.Header, error) {
+	// nil 表示获取最新块，我们要传具体的 big.Int
+	bigNum := new(big.Int).SetUint64(number)
+	return c.EthClient.HeaderByNumber(ctx, bigNum)
 }

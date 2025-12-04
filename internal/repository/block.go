@@ -24,3 +24,15 @@ func GetLastScannedBlock() (uint64, error) {
 func SaveBlockTrace(trace *model.BlockTrace) error {
 	return DB.Create(trace).Error
 }
+
+// GetBlockTraceByNumber 根据高度查询记录
+func GetBlockTraceByNumber(number uint64) (*model.BlockTrace, error) {
+	var trace model.BlockTrace
+	err := DB.Where("block_number = ?", number).First(&trace).Error
+	return &trace, err
+}
+
+// DeleteBlockTrace 删除指定高度的区块记录
+func DeleteBlockTrace(number uint64) error {
+	return DB.Where("block_number = ?", number).Delete(&model.BlockTrace{}).Error
+}
