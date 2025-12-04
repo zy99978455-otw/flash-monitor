@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # =========================================
+  # 1. Go 应用 (Web3 Monitor)
+  # =========================================
+  flash-monitor:
+    image: flash-monitor:v1
+    container_name: flash_monitor_app
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      # 请根据你实际的 VPN 端口修改 
+      - HTTP_PROXY=http://host.docker.internal:19828
+      - HTTPS_PROXY=http://host.docker.internal:19828
+    volumes:
+      # 👇 关键：因为 docker-compose.yml 在父目录，代码在子目录，所以路径要加子目录名
+        - ./configs/config.docker.yaml:/app/configs/config.yaml
+        - ./logs:/app/logs
+    networks:
+      - flash_net
+
+  # =========================================
+  # 2. MySQL 
+  # =========================================
+  mysql:
+    image: mysql:8.0
+    container_name: flash_monitor_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "flash_monitor"
+      MYSQL_USER: "ZY"
+      MYSQL_PASSWORD: "123456"
+    ports:
+      - "53307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    networks:
+      - flash_net
+
+  # =========================================
+  # 3. Redis (基础设施)
+  # =========================================
+  redis:
+    image: redis:alpine
+    container_name: flash_monitor_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - flash_net
+
+  # =========================================
+  # 4. Adminer (基础设施)
+  # =========================================
+  adminer:
+    image: adminer
+    container_name: flash_monitor_adminer
+    restart: always
+    ports:
+      - "59080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    depends_on:
+      - mysql
+    networks:
+      - flash_net
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  flash_net:
+    driver: bridge

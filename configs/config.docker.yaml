@@ -1,0 +1,12 @@
+app:
+  env: "prod"            # 生产环境模式
+  name: "flash-monitor"
+
+chain:
+  # 保持不变
+  rpc_url: "https://ethereum-rpc.publicnode.com"
+  contract_address: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+
+database:
+  # 👇 重点在这里：host 变成了 "mysql"，端口变成了 "3306"
+  dsn: "root:123456@tcp(mysql:3306)/flash_monitor?charset=utf8mb4&parseTime=True&loc=Local"

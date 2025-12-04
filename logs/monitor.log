@@ -1353,3 +1353,418 @@
 2025-12-04T12:25:54.848+0800	INFO	monitor/main.go:148	🔍 [Main] 扫描中...	{"H": 23933994}
 2025-12-04T12:25:55.286+0800	INFO	monitor/main.go:64	💾 [Worker] 进度已保存	{"H": 23933994, "Tx数": 18}
 2025-12-04T12:25:56.091+0800	INFO	monitor/main.go:148	🔍 [Main] 扫描中...	{"H": 23933995}
+{"level":"FATAL","ts":"2025-12-04T16:24:05.117+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"FATAL","ts":"2025-12-04T16:24:31.039+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"FATAL","ts":"2025-12-04T16:25:22.555+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"INFO","ts":"2025-12-04T16:26:23.794+0800","caller":"monitor/main.go:82","msg":"✨ 首次启动","start":23938484}
+{"level":"INFO","ts":"2025-12-04T16:26:24.497+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938484}
+{"level":"INFO","ts":"2025-12-04T16:26:24.980+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938484,"Tx数":79}
+{"level":"INFO","ts":"2025-12-04T16:26:25.618+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938485}
+{"level":"INFO","ts":"2025-12-04T16:26:26.007+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938485,"Tx数":71}
+{"level":"INFO","ts":"2025-12-04T16:26:26.628+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938486}
+{"level":"INFO","ts":"2025-12-04T16:26:27.037+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938486,"Tx数":87}
+{"level":"INFO","ts":"2025-12-04T16:26:27.626+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938487}
+{"level":"INFO","ts":"2025-12-04T16:26:28.038+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938487,"Tx数":78}
+{"level":"INFO","ts":"2025-12-04T16:26:28.635+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938488}
+{"level":"INFO","ts":"2025-12-04T16:26:29.032+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938488,"Tx数":65}
+{"level":"INFO","ts":"2025-12-04T16:26:29.622+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938489}
+{"level":"INFO","ts":"2025-12-04T16:26:29.992+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938489,"Tx数":44}
+{"level":"INFO","ts":"2025-12-04T16:26:30.609+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938490}
+{"level":"INFO","ts":"2025-12-04T16:26:31.232+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938490,"Tx数":97}
+{"level":"INFO","ts":"2025-12-04T16:26:31.876+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938491}
+{"level":"INFO","ts":"2025-12-04T16:26:32.554+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938491,"Tx数":73}
+{"level":"INFO","ts":"2025-12-04T16:26:33.146+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938492}
+{"level":"INFO","ts":"2025-12-04T16:26:33.603+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938492,"Tx数":86}
+{"level":"INFO","ts":"2025-12-04T16:26:34.244+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938493}
+{"level":"INFO","ts":"2025-12-04T16:26:34.715+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938493,"Tx数":78}
+{"level":"INFO","ts":"2025-12-04T16:26:35.308+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938494}
+{"level":"INFO","ts":"2025-12-04T16:26:35.703+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938494,"Tx数":15}
+{"level":"INFO","ts":"2025-12-04T16:26:36.317+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938495}
+{"level":"INFO","ts":"2025-12-04T16:26:36.998+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938495,"Tx数":141}
+{"level":"INFO","ts":"2025-12-04T16:26:37.624+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938496}
+{"level":"INFO","ts":"2025-12-04T16:26:38.028+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938496,"Tx数":100}
+{"level":"INFO","ts":"2025-12-04T16:26:38.688+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938497}
+{"level":"INFO","ts":"2025-12-04T16:26:39.370+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938497,"Tx数":147}
+{"level":"INFO","ts":"2025-12-04T16:26:39.957+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938498}
+{"level":"INFO","ts":"2025-12-04T16:26:40.425+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938498,"Tx数":87}
+{"level":"INFO","ts":"2025-12-04T16:26:40.974+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938499}
+{"level":"INFO","ts":"2025-12-04T16:26:41.375+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938499,"Tx数":77}
+{"level":"INFO","ts":"2025-12-04T16:26:42.001+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938500}
+{"level":"INFO","ts":"2025-12-04T16:26:42.385+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938500,"Tx数":68}
+{"level":"INFO","ts":"2025-12-04T16:26:43.000+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938501}
+{"level":"INFO","ts":"2025-12-04T16:26:43.358+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938501,"Tx数":18}
+{"level":"INFO","ts":"2025-12-04T16:26:43.978+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938502}
+{"level":"INFO","ts":"2025-12-04T16:26:44.354+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938502,"Tx数":31}
+{"level":"INFO","ts":"2025-12-04T16:26:44.973+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938503}
+{"level":"INFO","ts":"2025-12-04T16:26:45.531+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938503,"Tx数":127}
+{"level":"INFO","ts":"2025-12-04T16:26:46.142+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938504}
+{"level":"INFO","ts":"2025-12-04T16:26:46.554+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938504,"Tx数":20}
+{"level":"INFO","ts":"2025-12-04T16:26:47.223+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938505}
+{"level":"INFO","ts":"2025-12-04T16:26:47.886+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938505,"Tx数":112}
+{"level":"INFO","ts":"2025-12-04T16:26:48.533+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938506}
+{"level":"INFO","ts":"2025-12-04T16:26:48.971+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938506,"Tx数":68}
+{"level":"INFO","ts":"2025-12-04T16:26:49.604+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938507}
+{"level":"INFO","ts":"2025-12-04T16:26:49.996+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938507,"Tx数":58}
+{"level":"INFO","ts":"2025-12-04T16:26:50.675+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938508}
+{"level":"INFO","ts":"2025-12-04T16:26:51.225+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938508,"Tx数":142}
+{"level":"INFO","ts":"2025-12-04T16:26:51.852+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938509}
+{"level":"INFO","ts":"2025-12-04T16:26:52.286+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938509,"Tx数":64}
+{"level":"INFO","ts":"2025-12-04T16:26:52.916+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938510}
+{"level":"INFO","ts":"2025-12-04T16:26:53.281+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938510,"Tx数":40}
+{"level":"INFO","ts":"2025-12-04T16:26:53.901+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938511}
+{"level":"INFO","ts":"2025-12-04T16:26:54.647+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938511,"Tx数":208}
+{"level":"INFO","ts":"2025-12-04T16:26:55.285+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938512}
+{"level":"INFO","ts":"2025-12-04T16:26:55.665+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938512,"Tx数":58}
+{"level":"INFO","ts":"2025-12-04T16:26:56.306+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938513}
+{"level":"INFO","ts":"2025-12-04T16:26:56.674+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938513,"Tx数":85}
+{"level":"INFO","ts":"2025-12-04T16:26:57.322+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938514}
+{"level":"INFO","ts":"2025-12-04T16:26:57.913+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938514,"Tx数":38}
+{"level":"INFO","ts":"2025-12-04T16:26:58.571+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938515}
+{"level":"INFO","ts":"2025-12-04T16:26:59.011+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938515,"Tx数":152}
+{"level":"INFO","ts":"2025-12-04T16:26:59.637+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938516}
+{"level":"INFO","ts":"2025-12-04T16:27:00.013+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938516,"Tx数":26}
+{"level":"INFO","ts":"2025-12-04T16:27:00.668+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938517}
+{"level":"INFO","ts":"2025-12-04T16:27:01.115+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938517,"Tx数":124}
+{"level":"INFO","ts":"2025-12-04T16:27:01.755+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938518}
+{"level":"INFO","ts":"2025-12-04T16:27:02.172+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938518,"Tx数":82}
+{"level":"INFO","ts":"2025-12-04T16:27:02.855+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938519}
+{"level":"INFO","ts":"2025-12-04T16:27:03.351+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938519,"Tx数":102}
+{"level":"INFO","ts":"2025-12-04T16:27:03.983+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938520}
+{"level":"INFO","ts":"2025-12-04T16:27:04.382+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938520,"Tx数":29}
+{"level":"INFO","ts":"2025-12-04T16:27:05.049+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938521}
+{"level":"INFO","ts":"2025-12-04T16:27:05.596+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938521,"Tx数":153}
+{"level":"INFO","ts":"2025-12-04T16:27:06.267+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938522}
+{"level":"INFO","ts":"2025-12-04T16:27:06.788+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938522,"Tx数":67}
+{"level":"INFO","ts":"2025-12-04T16:27:07.302+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938523}
+{"level":"INFO","ts":"2025-12-04T16:27:07.778+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938523,"Tx数":110}
+{"level":"INFO","ts":"2025-12-04T16:27:08.394+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938524}
+{"level":"INFO","ts":"2025-12-04T16:27:08.761+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938524,"Tx数":53}
+{"level":"INFO","ts":"2025-12-04T16:27:09.416+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938525}
+{"level":"INFO","ts":"2025-12-04T16:27:09.872+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938525,"Tx数":76}
+{"level":"INFO","ts":"2025-12-04T16:27:10.514+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938526}
+{"level":"INFO","ts":"2025-12-04T16:27:10.893+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938526,"Tx数":110}
+{"level":"INFO","ts":"2025-12-04T16:27:11.543+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938527}
+{"level":"INFO","ts":"2025-12-04T16:27:11.956+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938527,"Tx数":43}
+{"level":"INFO","ts":"2025-12-04T16:27:12.608+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938528}
+{"level":"INFO","ts":"2025-12-04T16:27:13.064+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938528,"Tx数":77}
+{"level":"INFO","ts":"2025-12-04T16:27:13.691+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938529}
+{"level":"INFO","ts":"2025-12-04T16:27:14.088+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938529,"Tx数":62}
+{"level":"INFO","ts":"2025-12-04T16:27:14.733+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938530}
+{"level":"INFO","ts":"2025-12-04T16:27:15.127+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938530,"Tx数":38}
+{"level":"INFO","ts":"2025-12-04T16:27:15.756+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938531}
+{"level":"INFO","ts":"2025-12-04T16:27:16.137+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938531,"Tx数":76}
+{"level":"INFO","ts":"2025-12-04T16:27:16.769+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938532}
+{"level":"INFO","ts":"2025-12-04T16:27:17.159+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938532,"Tx数":74}
+{"level":"INFO","ts":"2025-12-04T16:27:17.795+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938533}
+{"level":"INFO","ts":"2025-12-04T16:27:18.172+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938533,"Tx数":31}
+{"level":"INFO","ts":"2025-12-04T16:27:18.793+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938534}
+{"level":"INFO","ts":"2025-12-04T16:27:19.179+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938534,"Tx数":136}
+{"level":"INFO","ts":"2025-12-04T16:27:19.810+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938535}
+{"level":"INFO","ts":"2025-12-04T16:27:20.234+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938535,"Tx数":22}
+{"level":"INFO","ts":"2025-12-04T16:27:20.898+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938536}
+{"level":"INFO","ts":"2025-12-04T16:27:21.266+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938536,"Tx数":38}
+{"level":"INFO","ts":"2025-12-04T16:27:21.917+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938537}
+{"level":"INFO","ts":"2025-12-04T16:27:22.294+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938537,"Tx数":78}
+{"level":"INFO","ts":"2025-12-04T16:27:22.934+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938538}
+{"level":"INFO","ts":"2025-12-04T16:27:23.776+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938538,"Tx数":39}
+{"level":"INFO","ts":"2025-12-04T16:27:24.449+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938539}
+{"level":"INFO","ts":"2025-12-04T16:27:24.856+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938539,"Tx数":134}
+{"level":"DEBUG","ts":"2025-12-04T16:27:25.123+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938540}
+{"level":"INFO","ts":"2025-12-04T16:27:28.848+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938540}
+{"level":"INFO","ts":"2025-12-04T16:27:29.317+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938540,"Tx数":71}
+{"level":"DEBUG","ts":"2025-12-04T16:27:29.591+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938541}
+{"level":"DEBUG","ts":"2025-12-04T16:27:33.357+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938541}
+{"level":"DEBUG","ts":"2025-12-04T16:27:37.126+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938541}
+{"level":"INFO","ts":"2025-12-04T16:27:40.840+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938541}
+{"level":"INFO","ts":"2025-12-04T16:27:41.227+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938541,"Tx数":99}
+{"level":"DEBUG","ts":"2025-12-04T16:27:41.505+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:27:44.840+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:27:48.169+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:27:51.499+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:27:54.827+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:27:58.159+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"DEBUG","ts":"2025-12-04T16:28:01.490+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938542}
+{"level":"INFO","ts":"2025-12-04T16:28:05.166+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938542}
+{"level":"INFO","ts":"2025-12-04T16:28:05.829+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938542,"Tx数":136}
+{"level":"DEBUG","ts":"2025-12-04T16:28:06.113+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938543}
+{"level":"DEBUG","ts":"2025-12-04T16:28:09.451+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938543}
+{"level":"DEBUG","ts":"2025-12-04T16:28:12.783+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938543}
+{"level":"INFO","ts":"2025-12-04T16:28:16.916+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938543}
+{"level":"INFO","ts":"2025-12-04T16:28:17.317+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938543,"Tx数":32}
+{"level":"DEBUG","ts":"2025-12-04T16:28:17.614+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938544}
+{"level":"DEBUG","ts":"2025-12-04T16:28:20.947+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938544}
+{"level":"DEBUG","ts":"2025-12-04T16:28:24.284+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938544}
+{"level":"INFO","ts":"2025-12-04T16:28:28.398+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938544}
+{"level":"INFO","ts":"2025-12-04T16:28:28.814+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938544,"Tx数":76}
+{"level":"DEBUG","ts":"2025-12-04T16:28:29.112+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:32.439+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:35.782+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:39.111+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:42.438+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:45.804+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"DEBUG","ts":"2025-12-04T16:28:49.130+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938545}
+{"level":"INFO","ts":"2025-12-04T16:28:52.852+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938545}
+{"level":"INFO","ts":"2025-12-04T16:28:53.272+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938545,"Tx数":166}
+{"level":"DEBUG","ts":"2025-12-04T16:28:53.545+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938546}
+{"level":"DEBUG","ts":"2025-12-04T16:28:56.880+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938546}
+{"level":"DEBUG","ts":"2025-12-04T16:29:00.666+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938546}
+{"level":"INFO","ts":"2025-12-04T16:29:04.320+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938546}
+{"level":"INFO","ts":"2025-12-04T16:29:04.707+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938546,"Tx数":101}
+{"level":"DEBUG","ts":"2025-12-04T16:29:04.993+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938547}
+{"level":"DEBUG","ts":"2025-12-04T16:29:08.334+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938547}
+{"level":"DEBUG","ts":"2025-12-04T16:29:11.663+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938547}
+{"level":"DEBUG","ts":"2025-12-04T16:29:14.995+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938547}
+{"level":"INFO","ts":"2025-12-04T16:29:18.669+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938547}
+{"level":"INFO","ts":"2025-12-04T16:29:19.070+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938547,"Tx数":120}
+{"level":"DEBUG","ts":"2025-12-04T16:29:19.350+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938548}
+{"level":"DEBUG","ts":"2025-12-04T16:29:22.676+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938548}
+{"level":"DEBUG","ts":"2025-12-04T16:29:26.009+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938548}
+{"level":"INFO","ts":"2025-12-04T16:29:29.672+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938548}
+{"level":"INFO","ts":"2025-12-04T16:29:30.067+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938548,"Tx数":97}
+{"level":"DEBUG","ts":"2025-12-04T16:29:30.343+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938549}
+{"level":"DEBUG","ts":"2025-12-04T16:29:33.673+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938549}
+{"level":"DEBUG","ts":"2025-12-04T16:29:37.004+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938549}
+{"level":"INFO","ts":"2025-12-04T16:29:40.723+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938549}
+{"level":"INFO","ts":"2025-12-04T16:29:41.403+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938549,"Tx数":83}
+{"level":"DEBUG","ts":"2025-12-04T16:29:41.688+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938550}
+{"level":"DEBUG","ts":"2025-12-04T16:29:45.016+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938550}
+{"level":"DEBUG","ts":"2025-12-04T16:29:48.348+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938550}
+{"level":"DEBUG","ts":"2025-12-04T16:29:51.674+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938550}
+{"level":"INFO","ts":"2025-12-04T16:29:55.425+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938550}
+{"level":"INFO","ts":"2025-12-04T16:29:55.858+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938550,"Tx数":43}
+{"level":"DEBUG","ts":"2025-12-04T16:29:56.148+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938551}
+{"level":"DEBUG","ts":"2025-12-04T16:29:59.479+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938551}
+{"level":"DEBUG","ts":"2025-12-04T16:30:02.834+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938551}
+{"level":"INFO","ts":"2025-12-04T16:30:06.495+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938551}
+{"level":"INFO","ts":"2025-12-04T16:30:06.974+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938551,"Tx数":96}
+{"level":"DEBUG","ts":"2025-12-04T16:30:07.267+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:10.596+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:13.929+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:17.256+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:20.589+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:23.926+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"DEBUG","ts":"2025-12-04T16:30:27.256+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938552}
+{"level":"INFO","ts":"2025-12-04T16:30:30.929+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938552}
+{"level":"INFO","ts":"2025-12-04T16:30:31.347+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938552,"Tx数":123}
+{"level":"DEBUG","ts":"2025-12-04T16:30:31.623+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938553}
+{"level":"DEBUG","ts":"2025-12-04T16:30:34.958+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938553}
+{"level":"INFO","ts":"2025-12-04T16:30:38.625+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938553}
+{"level":"INFO","ts":"2025-12-04T16:30:39.711+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938553,"Tx数":98}
+{"level":"DEBUG","ts":"2025-12-04T16:30:39.997+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938554}
+{"level":"DEBUG","ts":"2025-12-04T16:30:43.327+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938554}
+{"level":"DEBUG","ts":"2025-12-04T16:30:46.660+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938554}
+{"level":"DEBUG","ts":"2025-12-04T16:30:50.000+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938554}
+{"level":"INFO","ts":"2025-12-04T16:30:53.708+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938554}
+{"level":"INFO","ts":"2025-12-04T16:30:54.109+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938554,"Tx数":155}
+{"level":"DEBUG","ts":"2025-12-04T16:30:54.835+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938555}
+{"level":"DEBUG","ts":"2025-12-04T16:30:58.165+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938555}
+{"level":"DEBUG","ts":"2025-12-04T16:31:01.505+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938555}
+{"level":"INFO","ts":"2025-12-04T16:31:05.190+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938555}
+{"level":"INFO","ts":"2025-12-04T16:31:05.599+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938555,"Tx数":110}
+{"level":"DEBUG","ts":"2025-12-04T16:31:05.872+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938556}
+{"level":"DEBUG","ts":"2025-12-04T16:31:09.208+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938556}
+{"level":"DEBUG","ts":"2025-12-04T16:31:12.536+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938556}
+{"level":"INFO","ts":"2025-12-04T16:31:16.205+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938556}
+{"level":"INFO","ts":"2025-12-04T16:31:16.576+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938556,"Tx数":75}
+{"level":"DEBUG","ts":"2025-12-04T16:31:16.869+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938557}
+{"level":"DEBUG","ts":"2025-12-04T16:31:20.198+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938557}
+{"level":"DEBUG","ts":"2025-12-04T16:31:23.527+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938557}
+{"level":"INFO","ts":"2025-12-04T16:31:27.224+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938557}
+{"level":"INFO","ts":"2025-12-04T16:31:27.680+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938557,"Tx数":94}
+{"level":"DEBUG","ts":"2025-12-04T16:31:28.410+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938558}
+{"level":"DEBUG","ts":"2025-12-04T16:31:31.739+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938558}
+{"level":"DEBUG","ts":"2025-12-04T16:31:35.085+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938558}
+{"level":"DEBUG","ts":"2025-12-04T16:31:38.412+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938558}
+{"level":"INFO","ts":"2025-12-04T16:31:42.090+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938558}
+{"level":"INFO","ts":"2025-12-04T16:31:44.479+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938558,"Tx数":97}
+{"level":"DEBUG","ts":"2025-12-04T16:31:44.781+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"FATAL","ts":"2025-12-04T16:31:48.253+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"INFO","ts":"2025-12-04T16:31:49.252+0800","caller":"monitor/main.go:88","msg":"🔄 断点续传","start":23938559,"lastHash":"0x32a8bfb345fe15fa3fe73408295a34719528654a38d70fd07728d57ee7b7dcae"}
+{"level":"DEBUG","ts":"2025-12-04T16:31:49.595+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"DEBUG","ts":"2025-12-04T16:31:52.922+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"DEBUG","ts":"2025-12-04T16:31:56.262+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"DEBUG","ts":"2025-12-04T16:31:59.594+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"DEBUG","ts":"2025-12-04T16:32:02.926+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938559}
+{"level":"INFO","ts":"2025-12-04T16:32:06.597+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938559}
+{"level":"INFO","ts":"2025-12-04T16:32:07.048+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938559,"Tx数":76}
+{"level":"DEBUG","ts":"2025-12-04T16:32:07.338+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938560}
+{"level":"DEBUG","ts":"2025-12-04T16:32:10.667+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938560}
+{"level":"DEBUG","ts":"2025-12-04T16:32:14.007+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938560}
+{"level":"INFO","ts":"2025-12-04T16:32:17.722+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938560}
+{"level":"INFO","ts":"2025-12-04T16:32:18.184+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938560,"Tx数":89}
+{"level":"DEBUG","ts":"2025-12-04T16:32:18.470+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938561}
+{"level":"DEBUG","ts":"2025-12-04T16:32:21.796+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938561}
+{"level":"DEBUG","ts":"2025-12-04T16:32:25.126+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938561}
+{"level":"INFO","ts":"2025-12-04T16:32:28.796+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938561}
+{"level":"INFO","ts":"2025-12-04T16:32:29.234+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938561,"Tx数":58}
+{"level":"DEBUG","ts":"2025-12-04T16:32:29.539+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938562}
+{"level":"DEBUG","ts":"2025-12-04T16:32:32.869+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938562}
+{"level":"DEBUG","ts":"2025-12-04T16:32:36.203+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938562}
+{"level":"INFO","ts":"2025-12-04T16:32:39.877+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938562}
+{"level":"INFO","ts":"2025-12-04T16:32:40.933+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938562,"Tx数":71}
+{"level":"DEBUG","ts":"2025-12-04T16:32:41.220+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938563}
+{"level":"DEBUG","ts":"2025-12-04T16:32:44.555+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938563}
+{"level":"DEBUG","ts":"2025-12-04T16:32:47.894+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938563}
+{"level":"INFO","ts":"2025-12-04T16:32:52.026+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938563}
+{"level":"INFO","ts":"2025-12-04T16:32:53.101+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938563,"Tx数":102}
+{"level":"DEBUG","ts":"2025-12-04T16:32:53.379+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938564}
+{"level":"DEBUG","ts":"2025-12-04T16:32:56.710+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938564}
+{"level":"DEBUG","ts":"2025-12-04T16:33:00.041+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938564}
+{"level":"INFO","ts":"2025-12-04T16:33:03.709+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938564}
+{"level":"INFO","ts":"2025-12-04T16:33:04.206+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938564,"Tx数":52}
+{"level":"DEBUG","ts":"2025-12-04T16:33:04.500+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:07.832+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:11.166+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:14.528+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:17.868+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:21.192+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"DEBUG","ts":"2025-12-04T16:33:24.549+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938565}
+{"level":"INFO","ts":"2025-12-04T16:33:28.275+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938565}
+{"level":"INFO","ts":"2025-12-04T16:33:29.028+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938565,"Tx数":212}
+{"level":"DEBUG","ts":"2025-12-04T16:33:29.311+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938566}
+{"level":"DEBUG","ts":"2025-12-04T16:33:32.641+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938566}
+{"level":"DEBUG","ts":"2025-12-04T16:33:35.965+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938566}
+{"level":"INFO","ts":"2025-12-04T16:33:39.624+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938566}
+{"level":"INFO","ts":"2025-12-04T16:33:39.999+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938566,"Tx数":66}
+{"level":"DEBUG","ts":"2025-12-04T16:33:40.285+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938567}
+{"level":"DEBUG","ts":"2025-12-04T16:33:43.614+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938567}
+{"level":"DEBUG","ts":"2025-12-04T16:33:46.943+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938567}
+{"level":"INFO","ts":"2025-12-04T16:33:50.833+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938567}
+{"level":"INFO","ts":"2025-12-04T16:33:51.204+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938567,"Tx数":16}
+{"level":"DEBUG","ts":"2025-12-04T16:33:51.506+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938568}
+{"level":"DEBUG","ts":"2025-12-04T16:33:54.831+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938568}
+{"level":"DEBUG","ts":"2025-12-04T16:33:58.155+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938568}
+{"level":"DEBUG","ts":"2025-12-04T16:34:01.480+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938568}
+{"level":"INFO","ts":"2025-12-04T16:34:05.174+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23938568}
+{"level":"INFO","ts":"2025-12-04T16:34:06.226+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23938568,"Tx数":83}
+{"level":"DEBUG","ts":"2025-12-04T16:34:06.513+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23938569}
+{"level":"FATAL","ts":"2025-12-04T23:28:43.286+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"FATAL","ts":"2025-12-04T23:29:09.191+0800","caller":"monitor/main.go:31","msg":"节点连接失败","error":"连接成功但无法获取 ChainID: Post \"https://ethereum-rpc.publicnode.com\": EOF"}
+{"level":"INFO","ts":"2025-12-04T23:30:01.579+0800","caller":"monitor/main.go:82","msg":"✨ 首次启动","start":23940525}
+{"level":"INFO","ts":"2025-12-04T23:30:02.692+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940525}
+{"level":"INFO","ts":"2025-12-04T23:30:03.149+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940525,"Tx数":70}
+{"level":"INFO","ts":"2025-12-04T23:30:03.785+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940526}
+{"level":"INFO","ts":"2025-12-04T23:30:04.164+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940526,"Tx数":51}
+{"level":"INFO","ts":"2025-12-04T23:30:04.799+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940527}
+{"level":"INFO","ts":"2025-12-04T23:30:05.222+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940527,"Tx数":109}
+{"level":"INFO","ts":"2025-12-04T23:30:05.864+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940528}
+{"level":"INFO","ts":"2025-12-04T23:30:06.280+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940528,"Tx数":61}
+{"level":"INFO","ts":"2025-12-04T23:30:06.907+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940529}
+{"level":"INFO","ts":"2025-12-04T23:30:07.359+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940529,"Tx数":52}
+{"level":"INFO","ts":"2025-12-04T23:30:07.986+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940530}
+{"level":"INFO","ts":"2025-12-04T23:30:08.430+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940530,"Tx数":122}
+{"level":"INFO","ts":"2025-12-04T23:30:09.045+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940531}
+{"level":"INFO","ts":"2025-12-04T23:30:09.422+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940531,"Tx数":47}
+{"level":"INFO","ts":"2025-12-04T23:30:10.043+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940532}
+{"level":"INFO","ts":"2025-12-04T23:30:10.432+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940532,"Tx数":65}
+{"level":"INFO","ts":"2025-12-04T23:30:11.056+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940533}
+{"level":"INFO","ts":"2025-12-04T23:30:11.722+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940533,"Tx数":160}
+{"level":"INFO","ts":"2025-12-04T23:30:12.305+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940534}
+{"level":"INFO","ts":"2025-12-04T23:30:12.848+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940534,"Tx数":88}
+{"level":"INFO","ts":"2025-12-04T23:30:13.316+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940535}
+{"level":"INFO","ts":"2025-12-04T23:30:13.712+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940535,"Tx数":27}
+{"level":"INFO","ts":"2025-12-04T23:30:14.365+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940536}
+{"level":"INFO","ts":"2025-12-04T23:30:14.809+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940536,"Tx数":72}
+{"level":"INFO","ts":"2025-12-04T23:30:15.470+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940537}
+{"level":"INFO","ts":"2025-12-04T23:30:16.020+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940537,"Tx数":155}
+{"level":"INFO","ts":"2025-12-04T23:30:16.633+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940538}
+{"level":"INFO","ts":"2025-12-04T23:30:17.147+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940538,"Tx数":97}
+{"level":"INFO","ts":"2025-12-04T23:30:17.763+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940539}
+{"level":"INFO","ts":"2025-12-04T23:30:18.197+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940539,"Tx数":79}
+{"level":"INFO","ts":"2025-12-04T23:30:18.847+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940540}
+{"level":"INFO","ts":"2025-12-04T23:30:19.234+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940540,"Tx数":126}
+{"level":"INFO","ts":"2025-12-04T23:30:19.851+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940541}
+{"level":"INFO","ts":"2025-12-04T23:30:20.283+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940541,"Tx数":76}
+{"level":"INFO","ts":"2025-12-04T23:30:20.909+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940542}
+{"level":"INFO","ts":"2025-12-04T23:30:21.398+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940542,"Tx数":92}
+{"level":"INFO","ts":"2025-12-04T23:30:22.011+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940543}
+{"level":"INFO","ts":"2025-12-04T23:30:22.938+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940543,"Tx数":104}
+{"level":"INFO","ts":"2025-12-04T23:30:23.588+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940544}
+{"level":"INFO","ts":"2025-12-04T23:30:24.230+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940544,"Tx数":60}
+{"level":"INFO","ts":"2025-12-04T23:30:24.874+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940545}
+{"level":"INFO","ts":"2025-12-04T23:30:25.353+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940545,"Tx数":94}
+{"level":"INFO","ts":"2025-12-04T23:30:25.984+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940546}
+{"level":"INFO","ts":"2025-12-04T23:30:26.458+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940546,"Tx数":97}
+{"level":"INFO","ts":"2025-12-04T23:30:27.258+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940547}
+{"level":"INFO","ts":"2025-12-04T23:30:27.751+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940547,"Tx数":104}
+{"level":"INFO","ts":"2025-12-04T23:30:28.385+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940548}
+{"level":"INFO","ts":"2025-12-04T23:30:28.921+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940548,"Tx数":144}
+{"level":"INFO","ts":"2025-12-04T23:30:29.566+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940549}
+{"level":"INFO","ts":"2025-12-04T23:30:30.093+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940549,"Tx数":113}
+{"level":"INFO","ts":"2025-12-04T23:30:30.705+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940550}
+{"level":"INFO","ts":"2025-12-04T23:30:31.097+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940550,"Tx数":90}
+{"level":"INFO","ts":"2025-12-04T23:30:31.744+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940551}
+{"level":"INFO","ts":"2025-12-04T23:30:32.133+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940551,"Tx数":87}
+{"level":"INFO","ts":"2025-12-04T23:30:32.800+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940552}
+{"level":"INFO","ts":"2025-12-04T23:30:33.252+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940552,"Tx数":72}
+{"level":"INFO","ts":"2025-12-04T23:30:33.913+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940553}
+{"level":"INFO","ts":"2025-12-04T23:30:34.305+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940553,"Tx数":58}
+{"level":"INFO","ts":"2025-12-04T23:30:34.937+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940554}
+{"level":"INFO","ts":"2025-12-04T23:30:35.379+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940554,"Tx数":68}
+{"level":"INFO","ts":"2025-12-04T23:30:36.014+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940555}
+{"level":"INFO","ts":"2025-12-04T23:30:36.392+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940555,"Tx数":45}
+{"level":"INFO","ts":"2025-12-04T23:30:37.032+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940556}
+{"level":"INFO","ts":"2025-12-04T23:30:37.443+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940556,"Tx数":180}
+{"level":"INFO","ts":"2025-12-04T23:30:38.099+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940557}
+{"level":"INFO","ts":"2025-12-04T23:30:38.630+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940557,"Tx数":182}
+{"level":"INFO","ts":"2025-12-04T23:30:39.245+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940558}
+{"level":"INFO","ts":"2025-12-04T23:30:39.675+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940558,"Tx数":40}
+{"level":"INFO","ts":"2025-12-04T23:30:40.325+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940559}
+{"level":"INFO","ts":"2025-12-04T23:30:40.697+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940559,"Tx数":42}
+{"level":"INFO","ts":"2025-12-04T23:30:41.357+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940560}
+{"level":"INFO","ts":"2025-12-04T23:30:41.741+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940560,"Tx数":99}
+{"level":"INFO","ts":"2025-12-04T23:30:42.368+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940561}
+{"level":"INFO","ts":"2025-12-04T23:30:42.977+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940561,"Tx数":97}
+{"level":"INFO","ts":"2025-12-04T23:30:43.599+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940562}
+{"level":"INFO","ts":"2025-12-04T23:30:44.239+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940562,"Tx数":180}
+{"level":"INFO","ts":"2025-12-04T23:30:44.856+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940563}
+{"level":"INFO","ts":"2025-12-04T23:30:45.236+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940563,"Tx数":96}
+{"level":"INFO","ts":"2025-12-04T23:30:45.865+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940564}
+{"level":"INFO","ts":"2025-12-04T23:30:46.241+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940564,"Tx数":69}
+{"level":"INFO","ts":"2025-12-04T23:30:46.876+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940565}
+{"level":"INFO","ts":"2025-12-04T23:30:47.425+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940565,"Tx数":132}
+{"level":"INFO","ts":"2025-12-04T23:30:48.049+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940566}
+{"level":"INFO","ts":"2025-12-04T23:30:48.446+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940566,"Tx数":99}
+{"level":"INFO","ts":"2025-12-04T23:30:49.084+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940567}
+{"level":"INFO","ts":"2025-12-04T23:30:50.188+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940567,"Tx数":103}
+{"level":"INFO","ts":"2025-12-04T23:30:50.831+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940568}
+{"level":"INFO","ts":"2025-12-04T23:30:51.644+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940568,"Tx数":139}
+{"level":"INFO","ts":"2025-12-04T23:30:52.259+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940569}
+{"level":"INFO","ts":"2025-12-04T23:30:52.677+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940569,"Tx数":42}
+{"level":"INFO","ts":"2025-12-04T23:30:53.344+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940570}
+{"level":"INFO","ts":"2025-12-04T23:30:53.720+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940570,"Tx数":130}
+{"level":"INFO","ts":"2025-12-04T23:30:54.355+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940571}
+{"level":"INFO","ts":"2025-12-04T23:30:54.747+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940571,"Tx数":115}
+{"level":"INFO","ts":"2025-12-04T23:30:55.386+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940572}
+{"level":"INFO","ts":"2025-12-04T23:30:56.010+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940572,"Tx数":93}
+{"level":"INFO","ts":"2025-12-04T23:30:56.652+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940573}
+{"level":"INFO","ts":"2025-12-04T23:30:57.067+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940573,"Tx数":87}
+{"level":"INFO","ts":"2025-12-04T23:30:57.684+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940574}
+{"level":"INFO","ts":"2025-12-04T23:30:58.113+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940574,"Tx数":29}
+{"level":"INFO","ts":"2025-12-04T23:30:58.771+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940575}
+{"level":"INFO","ts":"2025-12-04T23:30:59.220+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940575,"Tx数":57}
+{"level":"INFO","ts":"2025-12-04T23:30:59.860+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940576}
+{"level":"INFO","ts":"2025-12-04T23:31:00.469+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940576,"Tx数":87}
+{"level":"INFO","ts":"2025-12-04T23:31:01.166+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940577}
+{"level":"INFO","ts":"2025-12-04T23:31:01.572+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940577,"Tx数":125}
+{"level":"INFO","ts":"2025-12-04T23:31:02.374+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940578}
+{"level":"INFO","ts":"2025-12-04T23:31:02.744+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940578,"Tx数":82}
+{"level":"INFO","ts":"2025-12-04T23:31:03.412+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940579}
+{"level":"INFO","ts":"2025-12-04T23:31:03.905+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940579,"Tx数":162}
+{"level":"INFO","ts":"2025-12-04T23:31:04.570+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940580}
+{"level":"INFO","ts":"2025-12-04T23:31:05.080+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940580,"Tx数":81}
+{"level":"INFO","ts":"2025-12-04T23:31:05.861+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940581}
+{"level":"INFO","ts":"2025-12-04T23:31:06.397+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940581,"Tx数":160}
+{"level":"DEBUG","ts":"2025-12-04T23:31:06.680+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940582}
+{"level":"DEBUG","ts":"2025-12-04T23:31:10.012+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940582}
+{"level":"DEBUG","ts":"2025-12-04T23:31:13.349+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940582}
+{"level":"INFO","ts":"2025-12-04T23:31:17.033+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940582}
+{"level":"INFO","ts":"2025-12-04T23:31:17.423+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940582,"Tx数":146}
+{"level":"DEBUG","ts":"2025-12-04T23:31:17.714+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940583}
+{"level":"DEBUG","ts":"2025-12-04T23:31:21.047+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940583}
+{"level":"DEBUG","ts":"2025-12-04T23:31:24.385+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940583}
+{"level":"INFO","ts":"2025-12-04T23:31:28.070+0800","caller":"monitor/main.go:148","msg":"🔍 [Main] 扫描中...","H":23940583}
+{"level":"INFO","ts":"2025-12-04T23:31:28.494+0800","caller":"monitor/main.go:64","msg":"💾 [Worker] 进度已保存","H":23940583,"Tx数":71}
+{"level":"DEBUG","ts":"2025-12-04T23:31:28.766+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940584}
+{"level":"DEBUG","ts":"2025-12-04T23:31:32.105+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940584}
+{"level":"DEBUG","ts":"2025-12-04T23:31:35.438+0800","caller":"monitor/main.go:102","msg":"💤 等待出块...","current":23940584}
