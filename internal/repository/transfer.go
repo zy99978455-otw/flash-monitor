@@ -19,3 +19,15 @@ func SaveTransferEvent(event *model.TransferEvent) error {
 func DeleteTransferEventsByBlock(blockNumber uint64) error {
 	return DB.Where("block_number = ?", blockNumber).Delete(&model.TransferEvent{}).Error
 }
+
+// SaveTransferEventsBatch 批量保存转账事件 (性能优化版)
+func SaveTransferEventsBatch(events []*model.TransferEvent) error {
+	if len(events) == 0 {
+		return nil
+	}
+	// 使用 OnConflict 做去重，防止批量插入时某一条重复导致整体失败
+	// 每次插入 100 条，防止 SQL 语句过长
+	return DB.Clauses(clause.OnConflict{
+		DoNothing: true,
+	}).CreateInBatches(events, 100).Error
+}
