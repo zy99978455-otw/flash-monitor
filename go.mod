@@ -4,11 +4,14 @@ go 1.24.4
 
 require (
 	github.com/ethereum/go-ethereum v1.16.7
+	github.com/joho/godotenv v1.5.1
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.31.1
 )
+
+require github.com/lib/pq v1.12.3
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
