@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS transfer_events CASCADE;
+DROP TABLE IF EXISTS block_traces CASCADE;

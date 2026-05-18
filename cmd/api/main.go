@@ -15,6 +15,9 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/zy99978455-otw/flash-monitor/internal/indexer"
+
+	"github.com/zy99978455-otw/flash-monitor/internal/data"
 )
 
 type config struct {
@@ -34,7 +37,7 @@ type config struct {
 type application struct {
 	config config
 	logger *log.Logger
-	db     *sql.DB
+	models data.Models
 }
 
 func main() {
@@ -71,14 +74,25 @@ func main() {
 	app := &application{
 		config: cfg,
 		logger: logger,
-		db:     db,
+		models: data.NewModels(db),
 	}
 
 	logger.Printf("using RPC node: %s", app.config.rpc.mainNode)
 
+	// 初始化抓取引擎
+	engine, err := indexer.NewEngine(app.config.rpc.mainNode, app.models, app.logger)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go engine.Start(ctx)
+
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", app.config.port),
-		Handler:      nil, // 暂时填 nil，稍后我们会写路由
+		Handler:      app.routes(), // 挂载路由
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
