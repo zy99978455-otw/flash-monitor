@@ -10,7 +10,7 @@ type TransferEventModel struct {
 	DB *sql.DB
 }
 
-// GetAll 执行真正的 PostgreSQL 查询，支持根据发送方地址过滤
+// GetAll 抓取区块链上的事件日志
 func (m TransferEventModel) GetAll(fromAddress string, limit int) ([]*TransferEvent, error) {
 	query := `
 		SELECT id, tx_hash, log_index, block_number, block_hash, from_address, to_address, amount, token_address, created_at
@@ -56,6 +56,7 @@ func (m TransferEventModel) GetAll(fromAddress string, limit int) ([]*TransferEv
 	return events, nil
 }
 
+// Insert 将抓取到的事件日志存入数据库
 func (m TransferEventModel) Insert(event *TransferEvent) error {
 	// 使用 ON CONFLICT DO NOTHING 极其重要！
 	// 这样当以太坊出现微小回滚或重复扫描时，相同的 tx_hash + log_index 会被自动忽略，而不会导致程序崩溃

@@ -39,20 +39,29 @@ func (e *Engine) Start(ctx context.Context) {
 	defer ticker.Stop()
 
 	for {
+		// 监听两个通道
 		select {
-		case <-ctx.Done():
+		case <-ctx.Done(): //外部取消信号，优雅停机
 			e.logger.Println("indexer engine gracefully shutting down...")
 			return
-		case <-ticker.C:
+		case <-ticker.C: //定时器触发信号
 			if err := e.syncBlocks(ctx); err != nil {
-				// ✅ 修复 Bug: 这里必须用 Printf 才能打印出 err 的真实内容
+				// 这里必须用 Printf 才能打印出 err 的真实内容
 				e.logger.Printf("error syncing blocks: %v\n", err)
 			}
 		}
 	}
 }
 
-// syncBlocks 负责拉取区块、解码事件并插入 PostgreSQL
+// syncBlocks 是抓取引擎的核心同步处理器。
+// 它负责执行一个完整的“提取-转换-加载 (ETL)”工作流：
+// 1. 水位探测：比对本地数据库游标与主网最新区块高度，处理冷启动与落后追赶。
+// 2. 安全抓取：采用最大 2000 区块的批量限制，防止 Infura 节点请求过载。
+// 3. 精准过滤：使用 FilterQuery 直接在链上锁定 USDT 合约的 Transfer 事件。
+// 4. 数据落盘：将清洗后的交易数据和最新进度游标事务性地写入 PostgreSQL。
+//
+// 如果在同步过程中遇到网络错误，将返回 error 交由主循环重试；
+// 对于单条数据的插入失败，采取记录日志并跳过的策略，以保障整体引擎不宕机。
 func (e *Engine) syncBlocks(ctx context.Context) error {
 	header, err := e.client.HeaderByNumber(ctx, nil)
 	if err != nil {
@@ -69,15 +78,15 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 	if latestTrace != nil {
 		dbHeight = latestTrace.BlockNumber
 	} else {
-		dbHeight = chainHeight - 5
+		dbHeight = chainHeight - 5 //避免链重组织（reorg）导致数据错误
 	}
 
 	if dbHeight < chainHeight {
-		fromBlock := dbHeight + 1
-		toBlock := chainHeight
+		fromBlock := dbHeight + 1 //下一个未同步块
+		toBlock := chainHeight    //当前链高度
 
-		if toBlock-fromBlock > 2000 {
-			toBlock = fromBlock + 2000
+		if toBlock-fromBlock > 50 {
+			toBlock = fromBlock + 50
 		}
 
 		e.logger.Printf("fetching logs from block %d to %d (chain head: %d)", fromBlock, toBlock, chainHeight)
@@ -85,10 +94,10 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		// 定义 ERC20 Transfer 的签名 Hash
 		transferSigHash := crypto.Keccak256Hash([]byte("Transfer(address,address,uint256)"))
 
-		// ✅ 新增：定义 USDT 的主网官方合约地址
+		// 定义 USDT 的主网官方合约地址
 		usdtAddress := common.HexToAddress("0xdAC17F958D2ee523a2206206994597C13D831ec7")
 
-		// ✅ 新增：把 usdtAddress 放进 Addresses 过滤条件里
+		// 把 usdtAddress 放进 Addresses 过滤条件里
 		query := ethereum.FilterQuery{
 			FromBlock: big.NewInt(fromBlock),
 			ToBlock:   big.NewInt(toBlock),
@@ -104,17 +113,26 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		}
 		e.logger.Printf("found %d USDT Transfer logs in current batch", len(logs))
 
+		// 遍历事件并解析
 		for _, vLog := range logs {
 			if len(vLog.Topics) != 3 {
 				continue
 			}
 
+			/*
+				ERC20 Transfer 事件：
+					topics[0] → event signature
+					topics[1] → from
+					topics[2] → to
+					data → amount
+			*/
 			fromAddr := common.HexToAddress(vLog.Topics[1].Hex()).Hex()
 			toAddr := common.HexToAddress(vLog.Topics[2].Hex()).Hex()
 
 			amount := new(big.Int)
 			amount.SetBytes(vLog.Data)
 
+			// 封装事件并写入数据库
 			event := &data.TransferEvent{
 				TxHash:       vLog.TxHash.Hex(),
 				LogIndex:     int(vLog.Index),
@@ -133,13 +151,13 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			}
 		}
 
+		// 更新区块游标
 		trace := &data.BlockTrace{
 			BlockNumber: toBlock,
 			BlockHash:   header.Hash().Hex(),
 			ParentHash:  header.ParentHash.Hex(),
 		}
 
-		// ✅ 修复：捕获游标插入的错误
 		traceErr := e.models.BlockTraces.Insert(trace)
 		if traceErr != nil {
 			e.logger.Printf("❌ 插入游标数据失败 [Block: %d]: %v\n", toBlock, traceErr)

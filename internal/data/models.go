@@ -5,12 +5,15 @@ import (
 	"time"
 )
 
+// BlockTrace 代表 区块扫描轨迹
+// BlockNumber 处理 ·断点续传·
+// BlockHash和ParentHash 处理 ·分叉与回滚·
 type BlockTrace struct {
 	ID          int64     `json:"id"`
 	BlockNumber int64     `json:"block_number"`
 	BlockHash   string    `json:"block_hash"`
-	ParentHash  string    `json:"parent_hash"`
-	ScanTime    time.Time `json:"scan_time"`
+	ParentHash  string    `json:"parent_hash"` // 上一个区块的哈希值
+	ScanTime    time.Time `json:"scan_time"`   //处理完这个区块的现实时间
 }
 
 // TransferEvent 代表以太坊上的转账事件

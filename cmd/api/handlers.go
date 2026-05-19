@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// 定义交易响应
 type TransactionResponse struct {
 	TxHash      string `json:"tx_hash"`
 	BlockNumber int64  `json:"block_number"`

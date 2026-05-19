@@ -1,13 +1,18 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
 
-func (app *application) routes() *http.ServeMux {
-	mux := http.NewServeMux()
+	"github.com/julienschmidt/httprouter" //处理option请求和对json统一友好
+)
 
-	mux.HandleFunc("/v1/healthcheck", app.healthcheckHandler)
+func (app *application) routes() http.Handler {
 
-	mux.HandleFunc("/v1/transactions", app.listTransactionsHandler)
+	router := httprouter.New()
 
-	return mux
+	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
+
+	router.HandlerFunc(http.MethodGet, "/v1/transactions", app.listTransactionsHandler)
+
+	return router
 }

@@ -10,7 +10,8 @@ type BlockTraceModel struct {
 	DB *sql.DB
 }
 
-// Insert 插入新的游标
+// Insert 负责在数据库中持久化当前区块的扫描轨迹（游标）。
+// 它是实现引擎“断点续传”和“防区块链分叉回滚”的核心元数据记录器。
 func (m BlockTraceModel) Insert(trace *BlockTrace) error {
 	query := `
 		INSERT INTO block_traces (block_number, block_hash, parent_hash, scan_time)
@@ -25,7 +26,9 @@ func (m BlockTraceModel) Insert(trace *BlockTrace) error {
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(&trace.ID)
 }
 
-// GetLatest 获取最新的抓取游标
+// GetLatest 获取数据库中记录的最新区块扫描轨迹。
+// 它是抓取引擎重启时“读取存档”的关键方法。
+// 如果数据库为空（首次启动），将安全地返回 (nil, nil) 而不是报错。
 func (m BlockTraceModel) GetLatest() (*BlockTrace, error) {
 	query := `
 		SELECT id, block_number, block_hash, parent_hash, scan_time 
