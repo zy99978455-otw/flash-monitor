@@ -2,7 +2,7 @@ package indexer
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"math/big"
 	"time"
 
@@ -18,22 +18,28 @@ import (
 type Engine struct {
 	client *ethclient.Client
 	models data.Models
-	logger *log.Logger
+	logger *slog.Logger
+	events chan *data.TransferEvent
 }
 
 // NewEngine 初始化并返回一个新的抓取引擎
-func NewEngine(rpcURL string, models data.Models, logger *log.Logger) (*Engine, error) {
+func NewEngine(rpcURL string, models data.Models, logger *slog.Logger, events chan *data.TransferEvent) (*Engine, error) {
 	client, err := ethclient.Dial(rpcURL)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Engine{client: client, models: models, logger: logger}, nil
+	return &Engine{
+		client: client,
+		models: models,
+		logger: logger,
+		events: events,
+	}, nil
 }
 
 // Start 启动后台抓取任务 (死循环轮询)
 func (e *Engine) Start(ctx context.Context) {
-	e.logger.Println("Starting web3 indexer Engine...")
+	e.logger.Info("Starting web3 indexer Engine...")
 
 	ticker := time.NewTicker(12 * time.Second) // 以太坊出块大概 12 秒
 	defer ticker.Stop()
@@ -42,12 +48,12 @@ func (e *Engine) Start(ctx context.Context) {
 		// 监听两个通道
 		select {
 		case <-ctx.Done(): //外部取消信号，优雅停机
-			e.logger.Println("indexer engine gracefully shutting down...")
+			e.logger.Info("indexer engine gracefully shutting down...")
 			return
 		case <-ticker.C: //定时器触发信号
 			if err := e.syncBlocks(ctx); err != nil {
 				// 这里必须用 Printf 才能打印出 err 的真实内容
-				e.logger.Printf("error syncing blocks: %v\n", err)
+				e.logger.Info("error syncing blocks: %v\n", err)
 			}
 		}
 	}
@@ -85,11 +91,13 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		fromBlock := dbHeight + 1 //下一个未同步块
 		toBlock := chainHeight    //当前链高度
 
-		if toBlock-fromBlock > 50 {
-			toBlock = fromBlock + 50
+		// USDT 太活跃了，50 个块可能超过 10,000 条记录（Infura 的限制）
+		// 我们把步长缩小到 5 个块，确保请求不会过大
+		if toBlock-fromBlock > 5 {
+			toBlock = fromBlock + 5
 		}
 
-		e.logger.Printf("fetching logs from block %d to %d (chain head: %d)", fromBlock, toBlock, chainHeight)
+		e.logger.Info("fetching logs from block %d to %d (chain head: %d)", fromBlock, toBlock, chainHeight)
 
 		// 定义 ERC20 Transfer 的签名 Hash
 		transferSigHash := crypto.Keccak256Hash([]byte("Transfer(address,address,uint256)"))
@@ -111,7 +119,7 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		e.logger.Printf("found %d USDT Transfer logs in current batch", len(logs))
+		e.logger.Info("found %d USDT Transfer logs in current batch", len(logs))
 
 		// 遍历事件并解析
 		for _, vLog := range logs {
@@ -132,6 +140,12 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			amount := new(big.Int)
 			amount.SetBytes(vLog.Data)
 
+			// 🐳 巨鲸过滤：只关注大于 50,000 USDT 的交易 (USDT 有 6 位小数)
+			minAmount := new(big.Int).Mul(big.NewInt(50000), big.NewInt(1000000))
+			if amount.Cmp(minAmount) < 0 {
+				continue
+			}
+
 			// 封装事件并写入数据库
 			event := &data.TransferEvent{
 				TxHash:       vLog.TxHash.Hex(),
@@ -147,7 +161,14 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			// ✅ 修复：不再静默忽略，显式捕获并打印插入错误
 			insertErr := e.models.TransferEvents.Insert(event)
 			if insertErr != nil {
-				e.logger.Printf("❌ 插入交易数据失败 [Tx: %s]: %v\n", event.TxHash, insertErr)
+				e.logger.Info("❌ 插入交易数据失败 [Tx: %s]: %v\n", event.TxHash, insertErr)
+			} else {
+				// 只有成功插入（或 ON CONFLICT 被忽略但我们也视作成功逻辑）的数据才推送到实时通道
+				// 注意：这里为了简单直接发送。如果是 ON CONFLICT 忽略的情况，可能不需要重复推。
+				// 但由于 Indexer 逻辑，新抓到的通常都是新数据。
+				if e.events != nil {
+					e.events <- event
+				}
 			}
 		}
 
@@ -160,7 +181,7 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 
 		traceErr := e.models.BlockTraces.Insert(trace)
 		if traceErr != nil {
-			e.logger.Printf("❌ 插入游标数据失败 [Block: %d]: %v\n", toBlock, traceErr)
+			e.logger.Info("❌ 插入游标数据失败 [Block: %d]: %v\n", toBlock, traceErr)
 		}
 	}
 

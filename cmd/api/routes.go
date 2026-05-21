@@ -10,9 +10,13 @@ func (app *application) routes() http.Handler {
 
 	router := httprouter.New()
 
+	router.NotFound = http.HandlerFunc(app.notFoundResponse)
+
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
 
 	router.HandlerFunc(http.MethodGet, "/v1/transactions", app.listTransactionsHandler)
 
-	return router
+	router.HandlerFunc(http.MethodGet, "/v1/ws", app.serveWebSocket)
+
+	return app.recoverPanic(router)
 }

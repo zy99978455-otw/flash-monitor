@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
 
 // 定义交易响应
@@ -14,29 +16,11 @@ type TransactionResponse struct {
 	Time        string `json:"timestamp"`
 }
 
-func (app *application) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
-
-	// 准备要返回的数据
-	env := envelope{
-		"status": "available",
-		"system_info": map[string]string{
-			"environment": app.config.env,
-			"version":     "1.0.0",
-		},
-	}
-
-	err := app.writeJSON(w, http.StatusOK, env, nil)
-	if err != nil {
-		app.logger.Println(err)
-		http.Error(w, "The server encountered a problem and could not process your request", http.StatusInternalServerError)
-	}
-}
-
 func (app *application) listTransactionsHandler(w http.ResponseWriter, r *http.Request) {
 	// 从数据库中获取真实的转账记录 (默认取最近 20 条)
 	events, err := app.models.TransferEvents.GetAll("", 20)
 	if err != nil {
-		app.logger.Printf("❌ 获取转账记录失败: %v", err)
+		app.logger.Info("❌ 获取转账记录失败: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -50,6 +34,33 @@ func (app *application) listTransactionsHandler(w http.ResponseWriter, r *http.R
 	// 使用 writeJSON 辅助函数返回
 	err = app.writeJSON(w, http.StatusOK, env, nil)
 	if err != nil {
-		app.logger.Printf("❌ 写入 JSON 响应失败: %v", err)
+		app.logger.Info("❌ 写入 JSON 响应失败: %v", err)
+	}
+}
+
+func (app *application) serveWebSocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		app.logger.Info("❌ WebSocket 升级失败: %v", err)
+		return
+	}
+
+	app.hub.register <- conn
+
+	// 保持连接，直到客户端断开或发生错误
+	defer func() {
+		app.hub.unregister <- conn
+	}()
+
+	// 这里的读循环必不可少，即使你暂时不处理客户端发来的消息
+	// 它可以检测连接是否断开并处理 Ping/Pong 消息
+	for {
+		_, _, err := conn.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				app.logger.Info("❌ WebSocket 读取异常: %v", err)
+			}
+			break
+		}
 	}
 }
