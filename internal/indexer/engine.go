@@ -45,6 +45,10 @@ func (e *Engine) Start(ctx context.Context) {
 	ticker := time.NewTicker(12 * time.Second) // 以太坊出块大概 12 秒
 	defer ticker.Stop()
 
+	if err := e.syncBlocks(ctx); err != nil {
+		e.logger.Error("failed to sync blocks", "error", err)
+	}
+
 	for {
 		// 监听两个通道
 		select {
@@ -52,8 +56,17 @@ func (e *Engine) Start(ctx context.Context) {
 			e.logger.Info("indexer engine gracefully shutting down...")
 			return
 		case <-ticker.C: //定时器触发信号
+			if ctx.Err() != nil {
+				e.logger.Info("indexer engine gracefully shutting down...")
+				return
+			}
+
 			if err := e.syncBlocks(ctx); err != nil {
-				// 这里必须用 Printf 才能打印出 err 的真实内容
+
+				if err == context.Canceled {
+					return
+				}
+
 				e.logger.Error("failed to sync blocks in current tick", "error", err)
 			}
 		}
@@ -152,6 +165,12 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
+		// 🛑 新增拦截：如果网络请求期间按了 Ctrl+C，直接丢弃这些日志，不进数据库！
+		if ctx.Err() != nil {
+			e.logger.Info("sync canceled before db transaction, aborting")
+			return ctx.Err()
+		}
+
 		e.logger.Info("found USDT Transfer logs in current batch", "logs_count", len(logs))
 
 		// 2. 数据库原子事务开启
@@ -165,6 +184,13 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 
 		// 遍历事件并解析
 		for _, vLog := range logs {
+
+			// 🛑 核心拦截：如果插入一半按了 Ctrl+C，立刻报错退出，触发 tx.Rollback()
+			if ctx.Err() != nil {
+				e.logger.Warn("sync canceled during db insert, aborting current batch")
+				return ctx.Err()
+			}
+
 			if len(vLog.Topics) != 3 {
 				continue
 			}

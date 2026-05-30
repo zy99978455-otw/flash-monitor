@@ -6,11 +6,10 @@ import (
 	"flag"
 	"log"
 	"log/slog"
+	"sync"
 
 	"os"
 	"time"
-
-	"sync"
 
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv"
@@ -45,8 +44,11 @@ type application struct {
 	config config
 	logger *slog.Logger
 	models data.Models
-	hub    *Hub
 	wg     sync.WaitGroup
+	broker *Broker
+
+	// 这是一个用来远程关闭引擎的函数开关
+	cancelEngine context.CancelFunc
 }
 
 func main() {
@@ -87,30 +89,34 @@ func main() {
 
 	logger.Info("database connection pool established")
 
-	// 初始化 WebSocket Hub
-	hub := NewHub(logger)
-	go hub.Run()
+	ctx, cancel := context.WithCancel(context.Background())
+
+	// 初始化 SSE Broker
+	broker := NewBroker(ctx, logger)
+	go broker.Start()
 
 	app := &application{
-		config: cfg,
-		logger: logger,
-		models: data.NewModels(db),
-		hub:    hub,
+		config:       cfg,
+		logger:       logger,
+		models:       data.NewModels(db),
+		broker:       broker,
+		cancelEngine: cancel,
 	}
 
 	logger.Info("using RPC node", "url", app.config.rpc.mainNode)
 
 	// 初始化抓取引擎，传入 hub 的广播通道
-	engine, err := indexer.NewEngine(app.config.rpc.mainNode, app.models, app.logger, hub.broadcast)
+	engine, err := indexer.NewEngine(app.config.rpc.mainNode, app.models, app.logger, broker.Broadcast)
 	if err != nil {
 		logger.Error("failed to initialize indexer engine", "error", err)
 		os.Exit(1)
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	go engine.Start(ctx)
+	app.wg.Add(1)
+	go func() {
+		defer app.wg.Done()
+		engine.Start(ctx)
+	}()
 
 	err = app.serve()
 	if err != nil {
