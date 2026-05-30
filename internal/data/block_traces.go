@@ -26,6 +26,20 @@ func (m BlockTraceModel) Insert(trace *BlockTrace) error {
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(&trace.ID)
 }
 
+func (m BlockTraceModel) InsertTx(ctx context.Context, tx *sql.Tx, trace *BlockTrace) error {
+	query := `
+		INSERT INTO block_traces (block_number, block_hash, parent_hash)
+       	VALUES ($1, $2, $3)
+       	ON CONFLICT (block_number) DO NOTHING`
+
+	args := []any{
+		trace.BlockNumber, trace.BlockHash, trace.ParentHash,
+	}
+
+	_, err := tx.ExecContext(ctx, query, args...)
+	return err
+}
+
 // GetLatest 获取数据库中记录的最新区块扫描轨迹。
 // 它是抓取引擎重启时“读取存档”的关键方法。
 // 如果数据库为空（首次启动），将安全地返回 (nil, nil) 而不是报错。

@@ -2,11 +2,12 @@ package indexer
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"math/big"
 	"time"
 
-	"github.com/zy99978455-otw/flash-monitor/internal/data" // 👈 确保这里是你的真实模块名
+	"github.com/zy99978455-otw/flash-monitor/internal/data"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
@@ -53,7 +54,7 @@ func (e *Engine) Start(ctx context.Context) {
 		case <-ticker.C: //定时器触发信号
 			if err := e.syncBlocks(ctx); err != nil {
 				// 这里必须用 Printf 才能打印出 err 的真实内容
-				e.logger.Info("error syncing blocks: %v\n", err)
+				e.logger.Error("failed to sync blocks in current tick", "error", err)
 			}
 		}
 	}
@@ -74,6 +75,38 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		return err
 	}
 	chainHeight := header.Number.Int64()
+
+	// 1. 链重组（Reorg）循环检测与回滚
+	for {
+		latestTrace, err := e.models.BlockTraces.GetLatest()
+		if err != nil {
+			return err
+		}
+		if latestTrace == nil {
+			break //冷启动
+		}
+
+		rpcHeader, err := e.client.HeaderByNumber(ctx, big.NewInt(latestTrace.BlockNumber))
+		if err != nil {
+			return err
+		}
+
+		if rpcHeader.Hash().Hex() == latestTrace.BlockHash {
+			break //祖先一致，未分叉
+		}
+
+		e.logger.Warn("Chain reorg detected! Initiating database rollback...",
+			"blockNumber", latestTrace.BlockNumber,
+			"db_Hash", latestTrace.BlockHash,
+			"canonical_rpc_hash", rpcHeader.Hash().Hex(),
+		)
+
+		err = e.models.RollbackBlock(ctx, latestTrace.BlockNumber)
+		if err != nil {
+			return fmt.Errorf("error rolling back database block: %w", err)
+		}
+		e.logger.Info("Successfully rolled back single block state", "blockNumber", latestTrace.BlockNumber)
+	}
 
 	var dbHeight int64 = 0
 	latestTrace, err := e.models.BlockTraces.GetLatest()
@@ -97,7 +130,7 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			toBlock = fromBlock + 5
 		}
 
-		e.logger.Info("fetching logs from block %d to %d (chain head: %d)", fromBlock, toBlock, chainHeight)
+		e.logger.Info("fetching logs from ethereum node", "from_block", fromBlock, "to", toBlock, "chain_head", chainHeight)
 
 		// 定义 ERC20 Transfer 的签名 Hash
 		transferSigHash := crypto.Keccak256Hash([]byte("Transfer(address,address,uint256)"))
@@ -119,7 +152,16 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		e.logger.Info("found %d USDT Transfer logs in current batch", len(logs))
+		e.logger.Info("found USDT Transfer logs in current batch", "logs_count", len(logs))
+
+		// 2. 数据库原子事务开启
+		tx, err := e.models.DB.BeginTx(ctx, nil)
+		if err != nil {
+			return err
+		}
+		defer tx.Rollback()
+
+		var pendingPushEvents []*data.TransferEvent
 
 		// 遍历事件并解析
 		for _, vLog := range logs {
@@ -136,10 +178,7 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			*/
 			fromAddr := common.HexToAddress(vLog.Topics[1].Hex()).Hex()
 			toAddr := common.HexToAddress(vLog.Topics[2].Hex()).Hex()
-
-			amount := new(big.Int)
-			amount.SetBytes(vLog.Data)
-
+			amount := new(big.Int).SetBytes(vLog.Data)
 			// 🐳 巨鲸过滤：只关注大于 50,000 USDT 的交易 (USDT 有 6 位小数)
 			minAmount := new(big.Int).Mul(big.NewInt(50000), big.NewInt(1000000))
 			if amount.Cmp(minAmount) < 0 {
@@ -158,32 +197,43 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 				TokenAddress: vLog.Address.Hex(),
 			}
 
-			// ✅ 修复：不再静默忽略，显式捕获并打印插入错误
-			insertErr := e.models.TransferEvents.Insert(event)
+			insertErr := e.models.TransferEvents.InsertTx(ctx, tx, event)
 			if insertErr != nil {
-				e.logger.Info("❌ 插入交易数据失败 [Tx: %s]: %v\n", event.TxHash, insertErr)
-			} else {
-				// 只有成功插入（或 ON CONFLICT 被忽略但我们也视作成功逻辑）的数据才推送到实时通道
-				// 注意：这里为了简单直接发送。如果是 ON CONFLICT 忽略的情况，可能不需要重复推。
-				// 但由于 Indexer 逻辑，新抓到的通常都是新数据。
-				if e.events != nil {
-					e.events <- event
-				}
+				e.logger.Error("failed to insert transactional transfer event, aborting batch", "tx_hash", event.TxHash, "error", insertErr)
+				return insertErr
 			}
+			pendingPushEvents = append(pendingPushEvents, event)
+		}
+
+		targetHeader, err := e.client.HeaderByNumber(ctx, big.NewInt(toBlock))
+		if err != nil {
+			return err
 		}
 
 		// 更新区块游标
 		trace := &data.BlockTrace{
 			BlockNumber: toBlock,
-			BlockHash:   header.Hash().Hex(),
-			ParentHash:  header.ParentHash.Hex(),
+			BlockHash:   targetHeader.Hash().Hex(),
+			ParentHash:  targetHeader.ParentHash.Hex(),
 		}
 
-		traceErr := e.models.BlockTraces.Insert(trace)
+		traceErr := e.models.BlockTraces.InsertTx(ctx, tx, trace)
 		if traceErr != nil {
-			e.logger.Info("❌ 插入游标数据失败 [Block: %d]: %v\n", toBlock, traceErr)
+			e.logger.Error("failed to update block trace cursor, aborting batch", "block_number", toBlock, "error", traceErr)
+			return traceErr
+		}
+
+		// 3.事务提交
+		err = tx.Commit()
+		if err != nil {
+			return err
+		}
+
+		if e.events != nil {
+			for _, event := range pendingPushEvents {
+				e.events <- event
+			}
 		}
 	}
-
 	return nil
 }

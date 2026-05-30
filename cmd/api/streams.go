@@ -9,7 +9,7 @@ import (
 func (app *application) serveWebSocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		app.logger.Info("❌ WebSocket 升级失败: %v", err)
+		app.logger.Info("❌ WebSocket 升级失败", "error", err)
 		return
 	}
 
@@ -26,7 +26,7 @@ func (app *application) serveWebSocket(w http.ResponseWriter, r *http.Request) {
 		_, _, err := conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				app.logger.Info("❌ WebSocket 读取异常: %v", err)
+				app.logger.Info("❌ WebSocket 读取异常", "error", err)
 			}
 			break
 		}
