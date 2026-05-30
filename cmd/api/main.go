@@ -98,7 +98,7 @@ func main() {
 		hub:    hub,
 	}
 
-	logger.Info("using RPC node: %s", app.config.rpc.mainNode)
+	logger.Info("using RPC node", "url", app.config.rpc.mainNode)
 
 	// 初始化抓取引擎，传入 hub 的广播通道
 	engine, err := indexer.NewEngine(app.config.rpc.mainNode, app.models, app.logger, hub.broadcast)

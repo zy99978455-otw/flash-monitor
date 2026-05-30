@@ -112,3 +112,24 @@ func (m TransferEventModel) Insert(event *TransferEvent) error {
 	_, err := m.DB.ExecContext(ctx, query, args...)
 	return err
 }
+
+func (m TransferEventModel) InsertTx(ctx context.Context, tx *sql.Tx, event *TransferEvent) error {
+	query := `
+		INSERT INTO transfer_events (tx_hash, log_index, block_number, block_hash, from_address, to_address, amount, token_address)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		ON CONFLICT (tx_hash, log_index) DO NOTHING`
+
+	args := []any{
+		event.TxHash,
+		event.LogIndex,
+		event.BlockNumber,
+		event.BlockHash,
+		event.FromAddress,
+		event.ToAddress,
+		event.Amount,
+		event.TokenAddress,
+	}
+
+	_, err := tx.ExecContext(ctx, query, args...)
+	return err
+}

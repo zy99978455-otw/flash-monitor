@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"database/sql"
 	"time"
 )
@@ -33,11 +34,34 @@ type TransferEvent struct {
 type Models struct {
 	BlockTraces    BlockTraceModel
 	TransferEvents TransferEventModel
+	DB             *sql.DB
 }
 
 func NewModels(db *sql.DB) Models {
 	return Models{
 		BlockTraces:    BlockTraceModel{DB: db},
 		TransferEvents: TransferEventModel{DB: db},
+		DB:             db,
 	}
+}
+
+// RollbackBlock 回滚指定区块的数据
+func (m Models) RollbackBlock(ctx context.Context, blockNumber int64) error {
+	tx, err := m.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	queryEvents := `DELETE FROM transfer_events WHERE block_number = $1`
+	if _, err = tx.ExecContext(ctx, queryEvents, blockNumber); err != nil {
+		return err
+	}
+
+	queryTrace := `DELETE FROM block_traces WHERE block_number = $1`
+	if _, err = tx.ExecContext(ctx, queryTrace, blockNumber); err != nil {
+		return err
+	}
+
+	return tx.Commit()
 }

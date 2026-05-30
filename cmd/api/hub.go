@@ -52,7 +52,7 @@ func (h *Hub) Run() {
 			for client := range h.clients {
 				err := client.WriteJSON(event)
 				if err != nil {
-					log.Printf("WebSocket write error, kicking client", err)
+					log.Printf("WebSocket write error, kicking client: %v", err)
 					client.Close()
 					delete(h.clients, client)
 				}
