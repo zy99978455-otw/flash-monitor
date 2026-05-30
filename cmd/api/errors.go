@@ -1,7 +1,6 @@
 package main
 
 import (
-	//"fmt"
 	"net/http"
 )
 
@@ -40,13 +39,15 @@ func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request)
 	app.errorResponse(w, r, http.StatusNotFound, message)
 }
 
-func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
-	message := "rate limit exceeded, please try again"
-	app.errorResponse(w, r, http.StatusTooManyRequests, message)
+func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
+	app.errorResponse(w, r, http.StatusBadRequest, err.Error())
 }
 
-// rateLimitExceededResponse 当用户请求过于频繁触发限流时，返回 429 Too Many Requests 状态码
-func (app *application) ratelimitExceededResponse(w http.ResponseWriter, r *http.Request) {
+func (app *application) failedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
+	app.errorResponse(w, r, http.StatusUnprocessableEntity, errors)
+}
+
+func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request) {
 	message := "rate limit exceeded, please try again"
 	app.errorResponse(w, r, http.StatusTooManyRequests, message)
 }

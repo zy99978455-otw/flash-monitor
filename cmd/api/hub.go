@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
+	"log/slog"
 	"net/http"
-	"sync"
 
 	"github.com/gorilla/websocket"
 	"github.com/zy99978455-otw/flash-monitor/internal/data"
@@ -20,15 +20,16 @@ type Hub struct {
 	broadcast  chan *data.TransferEvent
 	register   chan *websocket.Conn
 	unregister chan *websocket.Conn
-	mu         sync.Mutex
+	logger     *slog.Logger
 }
 
-func NewHub() *Hub {
+func NewHub(logger *slog.Logger) *Hub {
 	return &Hub{
 		clients:    make(map[*websocket.Conn]bool),
 		broadcast:  make(chan *data.TransferEvent, 256), // 增加 256 个事件的缓冲区
 		register:   make(chan *websocket.Conn),
 		unregister: make(chan *websocket.Conn),
+		logger:     logger,
 	}
 }
 
@@ -36,31 +37,26 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
-			h.mu.Lock()
 			h.clients[client] = true
-			h.mu.Unlock()
-			log.Println("New WebSocket client connected")
+			h.logger.Info("New WebSocket client connected", "active_clients", len(h.clients))
 
 		case client := <-h.unregister:
-			h.mu.Lock()
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				client.Close()
+				h.logger.Info("WebSocket client disconnected", "active_clients", len(h.clients))
+
 			}
-			h.mu.Unlock()
-			log.Println("WebSocket client disconnected")
 
 		case event := <-h.broadcast:
-			h.mu.Lock()
 			for client := range h.clients {
 				err := client.WriteJSON(event)
 				if err != nil {
-					log.Printf("WebSocket write error: %v", err)
+					log.Printf("WebSocket write error, kicking client", err)
 					client.Close()
 					delete(h.clients, client)
 				}
 			}
-			h.mu.Unlock()
 		}
 	}
 }

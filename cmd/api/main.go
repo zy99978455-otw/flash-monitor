@@ -46,7 +46,7 @@ type application struct {
 	logger *slog.Logger
 	models data.Models
 	hub    *Hub
-	wg     *sync.WaitGroup
+	wg     sync.WaitGroup
 }
 
 func main() {
@@ -88,7 +88,7 @@ func main() {
 	logger.Info("database connection pool established")
 
 	// 初始化 WebSocket Hub
-	hub := NewHub()
+	hub := NewHub(logger)
 	go hub.Run()
 
 	app := &application{

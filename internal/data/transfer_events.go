@@ -3,35 +3,61 @@ package data
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
+
+	"github.com/zy99978455-otw/flash-monitor/internal/validator"
 )
 
 type TransferEventModel struct {
 	DB *sql.DB
 }
 
-// GetAll 抓取区块链上的事件日志
-func (m TransferEventModel) GetAll(fromAddress string, limit int) ([]*TransferEvent, error) {
-	query := `
-		SELECT id, tx_hash, log_index, block_number, block_hash, from_address, to_address, amount, token_address, created_at
+func ValidateTransferEvent(v *validator.Validator, event *TransferEvent) {
+	// 检验以太坊地址格式
+	v.Check(validator.IsEthAddress(event.FromAddress), "from_address", "must be a valid hex-encoded Ethereum address")
+	v.Check(validator.IsEthAddress(event.ToAddress), "to_address", "must be a valid hex-encoded Ethereum address")
+
+	// 校验金额（不能为空且必须是正数数字）
+	v.Check(event.Amount != "", "amount", "must be provided")
+
+	// 校验交易哈希（长度必须是66位，0x 开头）
+	v.Check(len(event.TxHash) == 66, "tx_hash", "must be a valid transaction hash")
+
+	// 校验区块高度
+	v.Check(event.BlockNumber > 0, "block_number", "must be a positive integer")
+}
+
+// GetAll 抓取区块链上的事件日志 (增强版：支持分页、过滤、排序)
+func (m TransferEventModel) GetAll(fromAddress, toAddress string, filters Filters) ([]*TransferEvent, Metadata, error) {
+	// 使用 count(*) OVER() 同时获取总行数
+	// 使用 fmt.Sprintf 注入排序列和方向
+	query := fmt.Sprintf(`
+		SELECT count(*) OVER(), id, tx_hash, log_index, block_number, block_hash, from_address, to_address, amount, token_address, created_at
 		FROM transfer_events
 		WHERE ($1 = '' OR from_address = $1)
-		ORDER BY block_number DESC, log_index DESC
-		LIMIT $2`
+		AND ($2 = '' OR to_address = $2)
+		ORDER BY %s %s, log_index DESC
+		LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
+
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := m.DB.QueryContext(ctx, query, fromAddress, limit)
+	args := []any{fromAddress, toAddress, filters.limit(), filters.offset()}
+
+	rows, err := m.DB.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, err
+		return nil, Metadata{}, err
 	}
 	defer rows.Close()
 
-	// 初始化为空切片而不是 nil，确保 JSON 序列化时变成 [] 而不是 null
+	totalRecords := 0
 	events := []*TransferEvent{}
+
 	for rows.Next() {
 		var event TransferEvent
 		err := rows.Scan(
+			&totalRecords,
 			&event.ID,
 			&event.TxHash,
 			&event.LogIndex,
@@ -44,16 +70,19 @@ func (m TransferEventModel) GetAll(fromAddress string, limit int) ([]*TransferEv
 			&event.CreatedAt,
 		)
 		if err != nil {
-			return nil, err
+			return nil, Metadata{}, err
 		}
 		events = append(events, &event)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, err
+		return nil, Metadata{}, err
 	}
 
-	return events, nil
+	// 计算分页元数据
+	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
+
+	return events, metadata, nil
 }
 
 // Insert 将抓取到的事件日志存入数据库
