@@ -16,7 +16,7 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/v1/transactions", app.listTransactionsHandler)
 
-	router.HandlerFunc(http.MethodGet, "/v1/ws", app.serveWebSocket)
+	router.HandlerFunc(http.MethodGet, "/v1/events", app.broker.Handler)
 
 	return app.recoverPanic(router)
 }

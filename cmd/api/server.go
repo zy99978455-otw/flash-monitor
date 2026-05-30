@@ -18,7 +18,7 @@ func (app *application) serve() error {
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		WriteTimeout: 1 * time.Hour,
 		ErrorLog:     slog.NewLogLogger(app.logger.Handler(), slog.LevelError),
 	}
 
@@ -32,7 +32,10 @@ func (app *application) serve() error {
 
 		s := <-quit
 
-		app.logger.Info("shutting down server", "signal", s.String())
+		if app.cancelEngine != nil {
+			app.logger.Info("sending cancel signal to indexer engine...", "signal", s)
+			app.cancelEngine()
+		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 
