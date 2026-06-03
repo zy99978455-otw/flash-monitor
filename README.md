@@ -4,59 +4,57 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.0+-4169E1?style=flat&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
-
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/a04a40e3-99c0-4ef1-8ca3-6fa7e82a7e27" />
 
-FlashMonitor is a lightweight, production-grade EVM on-chain data indexing and distribution engine written in Go. Embracing the "Let's go further" geek philosophy, the system focuses on solving core pain points in Web3 data indexing: **data consistency (chain reorgs)**, **long-lived connection performance**, and **Single Point of Failure (SPOF)**.
 
-## 🎯 Core Features
 
-### 1. Millisecond-Level Global Graceful Shutdown
-Say goodbye to dangling connections and dirty data. By taking over the lifecycle via a global `context.Context`, the engine perfectly executes the following within **5 milliseconds** of receiving an OS termination signal (SIGINT/SIGTERM):
-* Intercepts and safely rolls back ongoing PostgreSQL atomic transactions.
-* Severs and cleans up all active SSE frontend long-lived connections.
-* Blocks and cancels underlying RPC network requests, achieving a zero-memory-leak safe exit.
+FlashMonitor 是一个采用 Go 语言编写的轻量级、生产级 EVM 链上数据监听与分发引擎。系统秉承 "Let's go further" 的极客理念，专注于解决 Web3 数据索引过程中的**数据一致性（链分叉问题）**、**长连接性能**以及**节点单点故障**等核心痛点。
 
-### 2. Chain Reorg Immunity Mechanism
-Mainnet forks shouldn't turn into data disasters. The engine senses chain state rollbacks in real-time through a `BlockHash` traceability comparison algorithm. Coupled with database atomic transaction isolation, it achieves automatic discovery and safe eviction of "phantom data," ensuring the absolute purity of business-layer data.
+## 🎯 核心架构亮点 (Core Features)
 
-### 3. Multi-Node RPC Fallback Manager
-Break the Single Point of Failure (SPOF) curse. Built with a `NodeManager` connection pool based on read-write locks (`sync.RWMutex`) and adaptive block height comparison, it implements real-time heartbeat monitoring of node health. When the primary node is rate-limited (HTTP 429) or unresponsive, it seamlessly routes to backup nodes and executes exponential backoff retries.
+### 1. 毫秒级全局优雅停机 (Graceful Shutdown)
+告别悬挂连接与脏数据。通过全局 `context.Context` 生命周期接管，引擎能够在接收到 OS 停机信号（SIGINT/SIGTERM）的 **5毫秒内**，完美完成：
+* 拦截并安全回滚正在进行的 PostgreSQL 原子事务。
+* 切断并清理所有活跃的 SSE 前端长连接。
+* 阻断并取消底层 RPC 网络请求，实现 0 内存泄漏安全退出。
 
-### 4. Lock-Free Real-Time SSE Broker
-Ditching bulky WebSockets, this system utilizes a Server-Sent Events (SSE) broadcast center built on Go's native `Channel` and `select` mechanisms. It leverages the non-blocking send characteristic of channels to automatically fuse (disconnect) slow clients, supporting ultra-fast, one-way pushing for tens of thousands of concurrent connections on a single machine.
+### 2. 链重组免疫机制 (Chain Reorg Defense)
+主网分叉不应成为数据灾难。引擎通过 `BlockHash` 溯源比对算法实时感知链状态回滚。配合数据库的原子事务隔离，实现“幽灵数据”的自动发现与安全剔除，保证业务层数据的绝对纯正。
+
+### 3. 多节点容灾路由 (RPC Fallback Manager)
+打破单点故障 (SPOF) 诅咒。内置 `NodeManager` 连接池，基于读写锁 (`sync.RWMutex`) 与自适应高度比对，实现节点健康状况的实时心跳检测。当主节点被限流 (HTTP 429) 或假死时，无缝转移至备用节点并执行指数退避重试。
+
+### 4. 无锁实时事件广播 (Lock-free SSE Broker)
+摒弃笨重的 WebSocket，采用基于 Go 原生 `Channel` 和 `select` 机制构建的 Server-Sent Events (SSE) 广播中心。利用通道非阻塞发送特性实现慢速客户端自动熔断，支持单机万级并发连接的极速单向推送。
 
 ---
 
-## 🚀 Quick Start
+## 🚀 极速部署 (Quick Start)
 
-Thanks to complete Docker container orchestration, you can launch the system with one click without installing any database or Go environment locally. The system is aggressively memory-tuned (GOMEMLIMIT constraints and Postgres buffer tuning) for lightweight cloud servers with 1GB RAM (e.g., RackNerd VPS).
+得益于完整的 Docker 容器化编排，无需在本地安装任何数据库或 Go 环境即可一键启动。系统已针对 1GB 内存的轻量级云服务器（如 RackNerd VPS）进行了极限内存调优（GOMEMLIMIT 限制与 Postgres 缓冲调优）。
 
-### 1. Environment Setup
-Clone the repository and prepare environment variables:
+### 1. 环境准备
+克隆代码并准备环境变量：
 ```bash
-git clone [https://github.com/zy99978455-otw/flash-monitor.git](https://github.com/zy99978455-otw/flash-monitor.git)
+git clone [https://github.com/YourUsername/flash-monitor.git](https://github.com/YourUsername/flash-monitor.git)
 cd flash-monitor
 cp .env.example .env
+(请在 .env 中填入你的真实 ETH_RPC_MAIN 地址)
 ```
 
-# Please insert your actual ETH_RPC_MAIN address in the .env file
-
-### 2. One-Click Launch
-```Bash
+### 2. 一键启动
+```bash
 docker compose up -d --build
 ```
-### 3. Real-Time Observation
-* Backend Logs: docker compose logs -f api
-* Frontend Whale Dashboard: Access http://localhost:4010 (or your server's IP) via browser to connect to the SSE real-time stream.
 
-🗺️ Roadmap
-To maintain the extreme lightweight and pure nature of V1, the following features have architectural placeholders and are planned for future versions:
+### 3. 实时观测
+* 后端日志: docker compose logs -f api
+* 前端巨鲸大屏：通过浏览器访问 http://localhost:4010 接入 SSE 流式推送。
 
-[x] V1.0: ETH mainnet monitoring, chain reorg defense, lock-free SSE push, Docker memory tuning.
+## 架构演进路线（Roadmap）
+为了保持 V1 版本的极致轻量与纯粹，以下功能已完成架构预留，计划于后续版本接入：
 
-[ ] V2.0: Introduce Redis for historical data caching and distributed cluster locks to support multi-node horizontal scaling.
-
-[ ] V2.1: Support dynamic configuration for concurrent monitoring of multiple EVM-compatible chains (BSC / Base / Arbitrum).
-
-[ ] V3.0: Integrate the Prometheus + Grafana ecosystem for visual monitoring of system metrics (RPC latency, memory reclamation rate, sync watermarks).
+* [x] V1.0: ETH 主网监听、链重组防御、SSE 无锁推送、Docker 内存调优。
+* [ ] V2.0: 引入 Redis 实现历史数据缓存与分布式集群锁，支持多节点横向扩展。
+* [ ] V2.1: 支持动态配置多条 EVM 兼容链 (BSC / Base / Arbitrum) 并发监听。
+* [ ] V3.0: 接入 Prometheus + Grafana 体系，实现系统指标 (RPC 延迟、内存回收率、同步水位) 的可视化监控观测。
