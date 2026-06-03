@@ -53,10 +53,10 @@ docker compose up -d --build
 ## Roadmap
 To maintain the extreme lightweight and pure nature of V1, the following features have architectural placeholders and are planned for future versions:
 
-[x] V1.0: ETH mainnet monitoring, chain reorg defense, lock-free SSE push, Docker memory tuning.
+[x] V1.0: ETH mainnet single-node indexing (Infura), chain reorg defense, lock-free SSE streaming, and Docker memory tuning.
 
-[ ] V2.0: Introduce Redis for historical data caching and distributed cluster locks to support multi-node horizontal scaling.
+[ ] V2.0: Introduce `NodeManager` for multi-node RPC fallback and exponential backoff retries, eliminating underlying data source Single Points of Failure (SPOF).
 
-[ ] V2.1: Support dynamic configuration for concurrent monitoring of multiple EVM-compatible chains (BSC / Base / Arbitrum).
+[ ] V2.1: Integrate Redis for historical data caching and distributed cluster locks to support multi-instance horizontal scaling.
 
-[ ] V3.0: Integrate the Prometheus + Grafana ecosystem for visual monitoring of system metrics (RPC latency, memory reclamation rate, sync watermarks).
+[ ] V3.0: Deploy the Prometheus + Grafana stack for visual observability and real-time monitoring of core system metrics.
