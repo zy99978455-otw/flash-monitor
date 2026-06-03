@@ -11,28 +11,37 @@ services:
       POSTGRES_PASSWORD: "123456"
       POSTGRES_DB: "flash_monitor"
     ports:
-      # 映射到本机的 5433 端口
       - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
       - flash_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ZY -d flash_monitor"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # =========================================
-  # 2. Redis
+  # 2. Redis(V2 架构预留，当前版本已隔离)
   # =========================================
-  redis:
-    image: redis:alpine
-    container_name: flash_monitor_redis
-    restart: always
-    ports:
-      # 这里用我们刚才改好的 16379，避免和你本地冲突
-      - "16379:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    networks:
-      - flash_net
+#  redis:
+#    image: redis:alpine
+#    container_name: flash_monitor_redis
+#    restart: always
+#    ports:
+#      # 这里用我们刚才改好的 16379，避免和你本地冲突
+#      - "16379:6379"
+#    volumes:
+#      - redis_data:/data
+#    command: redis-server --appendonly yes
+#    networks:
+#      - flash_net
+#    healthcheck:
+#      test: [ "CMD", "redis-cli", "ping" ]
+#      interval: 5s
+#      timeout: 3s
+#      retries: 5
 
   # =========================================
   # 3. API Service
@@ -43,15 +52,19 @@ services:
       dockerfile: Dockerfile
     container_name: flash_monitor_api
     restart: always
+    env_file:
+      - .env
     environment:
       - FLASH_DB_DSN=postgres://ZY:123456@postgres:5432/flash_monitor?sslmode=disable
-      - ETH_RPC_MAIN=https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY  # 请替换为你的 RPC
+#      - ETH_RPC_MAIN=https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY  # 请替换为你的 RPC
       - ENV=development
     ports:
       - "4010:4010"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+          condition: service_healthy
+      redis:
+          condition: service_healthy
     networks:
       - flash_net
 

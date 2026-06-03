@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashMonitor | 巨鲸雷达</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f172a; /* Tailwind slate-900 */
+            color: #e2e8f0;
+        }
+        /* 隐藏滚动条但保持可滚动 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 进场发光动画 */
+        .flash-glow { animation: glow 2s ease-out forwards; }
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); background-color: rgba(16, 185, 129, 0.2); }
+            100% { box-shadow: none; background-color: transparent; }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+<header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md p-4 flex justify-between items-center z-10">
+    <div class="flex items-center gap-3">
+        <div class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">
+            ⚡ FlashMonitor V1
+        </div>
+        <span class="text-xs px-2 py-1 bg-slate-800 rounded-md text-slate-400 border border-slate-700">Live Mainnet</span>
+    </div>
+
+    <div class="flex items-center gap-2" id="status-container">
+            <span class="relative flex h-3 w-3">
+                <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+        <span id="status-text" class="text-sm text-emerald-400 font-semibold">SSE Connected</span>
+    </div>
+</header>
+
+<main class="flex-1 p-6 flex flex-col gap-4 overflow-hidden">
+    <div class="grid grid-cols-3 gap-4 mb-2">
+        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex flex-col">
+            <span class="text-slate-400 text-xs mb-1">Total Monitored (USDT)</span>
+            <span class="text-2xl font-bold text-emerald-400" id="total-vol">$ 0.00</span>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex flex-col">
+            <span class="text-slate-400 text-xs mb-1">Whale Events Captured</span>
+            <span class="text-2xl font-bold text-cyan-400" id="event-count">0</span>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex flex-col">
+            <span class="text-slate-400 text-xs mb-1">Current Sync Block</span>
+            <span class="text-2xl font-bold text-purple-400" id="latest-block">Waiting...</span>
+        </div>
+    </div>
+
+    <div class="flex-1 bg-slate-800/30 border border-slate-700 rounded-lg flex flex-col overflow-hidden relative">
+        <div class="absolute top-0 w-full bg-slate-800 border-b border-slate-700 px-4 py-2 flex text-xs text-slate-400 font-bold uppercase z-10">
+            <div class="w-24 shrink-0">Block</div>
+            <div class="flex-1">Transaction Route (From ➔ To)</div>
+            <div class="min-w-[120px] shrink-0 text-right">Amount (USDT)</div>
+        </div>
+
+        <div id="log-container" class="flex-1 overflow-y-auto mt-8 p-2 no-scrollbar flex flex-col gap-2 pb-10">
+            <div id="waiting-msg" class="text-center text-slate-500 mt-10 animate-pulse">
+                Waiting for whale transactions on Ethereum Mainnet...
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // --- 核心业务逻辑 ---
+    const logContainer = document.getElementById('log-container');
+    const waitingMsg = document.getElementById('waiting-msg');
+
+    // 统计数据
+    let totalVol = 0;
+    let eventCount = 0;
+
+    // 格式化金额 (例如: 1,500,000.00)
+    const formatMoney = (amount) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount).replace('$', '');
+    };
+
+    // 截断钱包地址显示 (例如: 0x1234...abcd)
+    const formatAddress = (addr) => {
+        if (!addr) return "Unknown";
+        return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+    };
+
+    // 创建一条巨鲸记录 DOM
+    const createLogEntry = (data) => {
+
+        const block = data.block_number || 'latest';
+        const from = formatAddress(data.from_address);
+        const to = formatAddress(data.to_address);
+
+        const value = parseFloat(data.amount || 0);
+
+        // 样式判定：大于 100万 显红色，大于 10万 显黄色，其他显绿色
+        let valColor = "text-emerald-400";
+        if (value >= 1000000) valColor = "text-rose-500 font-bold animate-pulse";
+        else if (value >= 100000) valColor = "text-amber-400 font-bold";
+
+        const div = document.createElement('div');
+        div.className = "flex items-center px-4 py-3 bg-slate-800/80 rounded border border-slate-700 flash-glow text-sm";
+
+        div.innerHTML = `
+                <div class="w-24 shrink-0 text-slate-500 truncate" title="Block #${block}">[#${block}]</div>
+
+                <div class="flex-1 flex items-center gap-2 min-w-0 pr-4">
+                    <span class="text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded truncate" title="${from}">${from}</span>
+                    <span class="text-slate-500 shrink-0">➔</span>
+                    <span class="text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded truncate" title="${to}">${to}</span>
+                </div>
+
+                <div class="min-w-[120px] shrink-0 text-right truncate ${valColor}" title="${formatMoney(value)}">
+                    ${formatMoney(value)}
+                </div>
+            `;
+        return { div, value, block };
+    };
+
+    // --- SSE 长连接初始化 ---
+    const connectSSE = () => {
+        // 注意：跨域部署或相对路径请视情况修改这里
+        const eventSource = new EventSource('/v1/events');
+
+        eventSource.onopen = () => {
+            document.getElementById('status-ping').classList.remove('hidden');
+            document.getElementById('status-dot').className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+            document.getElementById('status-text').innerText = "SSE Connected";
+            document.getElementById('status-text').className = "text-sm text-emerald-400 font-semibold";
+        };
+
+        eventSource.onmessage = (event) => {
+            if (waitingMsg) waitingMsg.remove(); // 移除等待提示
+
+            try {
+                const data = JSON.parse(event.data);
+                const { div, value, block } = createLogEntry(data);
+
+                // 将新数据插入到列表最顶部
+                logContainer.insertBefore(div, logContainer.firstChild);
+
+                // 限制只保留最新的 100 条 DOM 防止浏览器内存爆炸
+                if (logContainer.children.length > 100) {
+                    logContainer.removeChild(logContainer.lastChild);
+                }
+
+                // 更新统计面板
+                document.getElementById('latest-block').innerText = `#${block}`;
+                eventCount++;
+                totalVol += value;
+
+                document.getElementById('event-count').innerText = eventCount;
+                document.getElementById('total-vol').innerText = `$ ${formatMoney(totalVol)}`;
+
+            } catch (err) {
+                console.error("Failed to parse SSE data:", err);
+            }
+        };
+
+        eventSource.onerror = (err) => {
+            console.error("SSE Connection Lost. Reconnecting...", err);
+            document.getElementById('status-ping').classList.add('hidden');
+            document.getElementById('status-dot').className = "relative inline-flex rounded-full h-3 w-3 bg-rose-500";
+            document.getElementById('status-text').innerText = "Connection Lost. Retrying...";
+            document.getElementById('status-text').className = "text-sm text-rose-500 font-semibold";
+        };
+    };
+
+    // 启动连接
+    connectSSE();
+</script>
+</body>
+</html>
