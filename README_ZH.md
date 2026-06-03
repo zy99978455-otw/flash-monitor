@@ -52,7 +52,7 @@ docker compose up -d --build
 ## 架构演进路线（Roadmap）
 为了保持 V1 版本的极致轻量与纯粹，以下功能已完成架构预留，计划于后续版本接入：
 
-* [x] V1.0: ETH 主网监听、链重组防御、SSE 无锁推送、Docker 内存调优。
-* [ ] V2.0: 引入 Redis 实现历史数据缓存与分布式集群锁，支持多节点横向扩展。
-* [ ] V2.1: 支持动态配置多条 EVM 兼容链 (BSC / Base / Arbitrum) 并发监听。
-* [ ] V3.0: 接入 Prometheus + Grafana 体系，实现系统指标 (RPC 延迟、内存回收率、同步水位) 的可视化监控观测。
+* [x] V1.0: ETH 主网单节点监听 (Infura)、链重组防御、SSE 无锁推送、Docker 内存调优。
+* [ ] V2.0: 引入 NodeManager 实现多节点 RPC 容灾与指数退避重试，解决底层数据源单点故障。
+* [ ] V2.1: 引入 Redis 实现历史数据缓存与分布式集群锁，支持多实例横向扩展。
+* [ ] V3.0: 接入 Prometheus + Grafana 体系，实现系统指标的可视化监控观测。
