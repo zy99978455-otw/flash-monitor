@@ -4,6 +4,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.0+-4169E1?style=flat&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
+<img width="2560" height="1380" alt="image" src="https://github.com/user-attachments/assets/6405b5ed-fb87-490b-ae15-6590953510f3" />
 
 
 FlashMonitor 是一个采用 Go 语言编写的轻量级、生产级 EVM 链上数据监听与分发引擎。系统秉承 "Let's go further" 的极客理念，专注于解决 Web3 数据索引过程中的**数据一致性（链分叉问题）**、**长连接性能**以及**节点单点故障**等核心痛点。
