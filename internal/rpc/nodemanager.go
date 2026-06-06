@@ -69,7 +69,7 @@ func NewManager(configs []NodeConfig, logger *slog.Logger) (*Manager, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	m := &Manager{
-		nodes:               make([]*Node, len(configs)),
+		nodes:               make([]*Node, 0, len(configs)),
 		healthCheckInterval: 30 * time.Second,
 		maxRetries:          3,
 		logger:              logger,
@@ -80,8 +80,8 @@ func NewManager(configs []NodeConfig, logger *slog.Logger) (*Manager, error) {
 	for _, config := range configs {
 		node, err := m.createNode(config)
 		if err != nil {
-			m.logger.Warn("failed to initialize node", "name", config.Name, "error", err)
-			continue
+			m.logger.Error("❌ 致命错误：节点初始化失败，请检查 URL 或代理网络！", "error", err)
+			return nil, err
 		}
 		m.nodes = append(m.nodes, node)
 	}
@@ -146,7 +146,7 @@ func (m *Manager) GetHealthyNode() (*Node, error) {
 		priority := node.Config.Priority
 		node.mu.RUnlock()
 
-		if isHealthy {
+		if !isHealthy {
 			continue
 		}
 

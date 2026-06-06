@@ -6,9 +6,9 @@ import (
 	"flag"
 	"log"
 	"log/slog"
-	"sync"
-
 	"os"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -16,6 +16,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/zy99978455-otw/flash-monitor/internal/data"
 	"github.com/zy99978455-otw/flash-monitor/internal/indexer"
+	"github.com/zy99978455-otw/flash-monitor/internal/rpc"
 )
 
 const version = "1.0.0"
@@ -36,7 +37,7 @@ type config struct {
 		enabled bool
 	}
 	rpc struct {
-		mainNode string
+		urls string //单节点变更为支持逗号分割的多节点配置
 	}
 }
 
@@ -46,6 +47,9 @@ type application struct {
 	models data.Models
 	wg     sync.WaitGroup
 	broker *Broker
+
+	// 将 NodeManager 注入到全局 application 结构体中
+	nodeManager *rpc.Manager
 
 	// 这是一个用来远程关闭引擎的函数开关
 	cancelEngine context.CancelFunc
@@ -67,7 +71,8 @@ func main() {
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
 	flag.DurationVar(&cfg.db.maxIdleTime, "db-max-idle-time", 15*time.Minute, "PostgreSQL max connection idle time")
 
-	flag.StringVar(&cfg.rpc.mainNode, "rpc-main", os.Getenv("ETH_RPC_MAIN"), "Ethereum RPC Node URL")
+	// 读取 ETH_RPC_URLS
+	flag.StringVar(&cfg.rpc.urls, "rpc-urls", os.Getenv("ETH_RPC_URLS"), "Comma-separated Ethereum RPC Node URLs")
 
 	// 限流器配置
 	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 2, "Rate limiter maximum requests per second")
@@ -89,6 +94,36 @@ func main() {
 
 	logger.Info("database connection pool established")
 
+	//// =========================================================================
+	// [V2 改造核心] 解析多节点配置并初始化 NodeManager
+	// =========================================================================
+	rawUrls := strings.Split(cfg.rpc.urls, ",")
+	var nodeConfigs []rpc.NodeConfig
+	for i, u := range rawUrls {
+		u = strings.TrimSpace(u)
+		if u == "" {
+			continue
+		}
+
+		// 动态生成节点配置，按照书写顺序决定优先级
+		nodeConfigs = append(nodeConfigs, rpc.NodeConfig{
+			Name:     "Node-" + string(rune('A'+i)),
+			URL:      u,
+			Priority: i + 1,
+			Timeout:  10 * time.Second,
+		})
+	}
+
+	nodeManager, err := rpc.NewManager(nodeConfigs, logger)
+	if err != nil {
+		logger.Error("failed to initialize rpc node manager", "error", err)
+		os.Exit(1)
+	}
+
+	// 保证程序退出时一定切断所有RPC心跳与连接
+	defer nodeManager.Stop()
+	logger.Info("rpc node manager initialized", "node_count", len(nodeConfigs))
+
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// 初始化 SSE Broker
@@ -100,13 +135,12 @@ func main() {
 		logger:       logger,
 		models:       data.NewModels(db),
 		broker:       broker,
+		nodeManager:  nodeManager,
 		cancelEngine: cancel,
 	}
 
-	logger.Info("using RPC node", "url", app.config.rpc.mainNode)
-
-	// 初始化抓取引擎，传入 hub 的广播通道
-	engine, err := indexer.NewEngine(app.config.rpc.mainNode, app.models, app.logger, broker.Broadcast)
+	// [V2 改造] 初始化抓取引擎。
+	engine := indexer.NewEngine(app.nodeManager, app.models, app.logger, broker.Broadcast)
 	if err != nil {
 		logger.Error("failed to initialize indexer engine", "error", err)
 		os.Exit(1)
