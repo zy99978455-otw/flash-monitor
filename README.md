@@ -53,10 +53,15 @@ docker compose up -d --build
 ## Roadmap
 To maintain the extreme lightweight and pure nature of V1, the following features have architectural placeholders and are planned for future versions:
 
-[x] V1.0: ETH mainnet single-node indexing (Infura), chain reorg defense, lock-free SSE streaming, and Docker memory tuning.
-
-[ ] V2.0: Introduce `NodeManager` for multi-node RPC fallback and exponential backoff retries, eliminating underlying data source Single Points of Failure (SPOF).
-
-[ ] V2.1: Integrate Redis for historical data caching and distributed cluster locks to support multi-instance horizontal scaling.
-
-[ ] V3.0: Deploy the Prometheus + Grafana stack for visual observability and real-time monitoring of core system metrics.
+- [x] **V1.0: Foundation**
+  ETH mainnet single-node indexing, synchronous logging, lock-free SSE streaming, and initial Docker configurations.
+- [x] **V2.0: High Availability & Resilience (Current)**
+  Introduced `NodeManager` for multi-node RPC fallback, exponential backoff retries, and atomic graceful shutdown, eliminating SPOF.
+- [ ] **V2.1: State & Accuracy Guard**
+  Implement durable progress checkpointing (断点续传) and delayed confirmation logic to robustly defend against chain reorgs.
+- [ ] **V2.2: Data Monetization & API Layer**
+  Develop RESTful endpoints (`/api/v1/whales`) for querying top-tier transactions and expose `NodeManager` telemetry via `/api/v1/health`.
+- [ ] **V3.0: Scalability & Architecture**
+  Refactor indexer using a decoupled Callback Architecture, introduce goroutine worker pools for high-throughput block parsing.
+- [ ] **V4.0: Distributed Operations**
+  Integrate Redis for cluster locks and deploy the Prometheus + Grafana stack for enterprise-grade observability.
