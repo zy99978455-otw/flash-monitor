@@ -35,10 +35,10 @@ Thanks to complete Docker container orchestration, you can launch the system wit
 ### 1. Environment Setup
 Clone the repository and prepare environment variables:
 ```bash
-git clone [https://github.com/YourUsername/flash-monitor.git](https://github.com/YourUsername/flash-monitor.git)
+git clone https://github.com/YourUsername/flash-monitor.git
 cd flash-monitor
 cp .env.example .env
-Please insert your actual ETH_RPC_MAIN address in the .env file
+Please insert your actual ETH_RPC_URLS address in the .env file
 ```
 
 ### 2. One-Click Launch
