@@ -8,34 +8,33 @@ import (
 	"time"
 
 	"github.com/zy99978455-otw/flash-monitor/internal/data"
+	"github.com/zy99978455-otw/flash-monitor/internal/rpc"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 // Engine 抓取器的核心结构体
 type Engine struct {
-	client *ethclient.Client
+	nodeManager *rpc.Manager //智能连接池
+	//client      *ethclient.Client
 	models data.Models
 	logger *slog.Logger
 	events chan *data.TransferEvent
 }
 
 // NewEngine 初始化并返回一个新的抓取引擎
-func NewEngine(rpcURL string, models data.Models, logger *slog.Logger, events chan *data.TransferEvent) (*Engine, error) {
-	client, err := ethclient.Dial(rpcURL)
-	if err != nil {
-		return nil, err
-	}
-
+// 纯依赖注入，不再返回 error，因为网络连接在 main.go 已经处理好了
+func NewEngine(manager *rpc.Manager, models data.Models, logger *slog.Logger, events chan *data.TransferEvent) *Engine {
 	return &Engine{
-		client: client,
-		models: models,
-		logger: logger,
-		events: events,
-	}, nil
+		nodeManager: manager,
+		models:      models,
+		logger:      logger,
+		events:      events,
+	}
 }
 
 // Start 启动后台抓取任务 (死循环轮询)
@@ -63,7 +62,7 @@ func (e *Engine) Start(ctx context.Context) {
 
 			if err := e.syncBlocks(ctx); err != nil {
 
-				if err == context.Canceled {
+				if err == context.Canceled || err == context.DeadlineExceeded {
 					return
 				}
 
@@ -74,20 +73,13 @@ func (e *Engine) Start(ctx context.Context) {
 }
 
 // syncBlocks 是抓取引擎的核心同步处理器。
-// 它负责执行一个完整的“提取-转换-加载 (ETL)”工作流：
-// 1. 水位探测：比对本地数据库游标与主网最新区块高度，处理冷启动与落后追赶。
-// 2. 安全抓取：采用最大 2000 区块的批量限制，防止 Infura 节点请求过载。
-// 3. 精准过滤：使用 FilterQuery 直接在链上锁定 USDT 合约的 Transfer 事件。
-// 4. 数据落盘：将清洗后的交易数据和最新进度游标事务性地写入 PostgreSQL。
-//
-// 如果在同步过程中遇到网络错误，将返回 error 交由主循环重试；
-// 对于单条数据的插入失败，采取记录日志并跳过的策略，以保障整体引擎不宕机。
+
 func (e *Engine) syncBlocks(ctx context.Context) error {
-	header, err := e.client.HeaderByNumber(ctx, nil)
+	// [V2升级] 使用封装好的带有容灾重试的方法获取高度
+	chainHeight, err := e.getLatestHeight(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get latest height: %w", err)
 	}
-	chainHeight := header.Number.Int64()
 
 	// 1. 链重组（Reorg）循环检测与回滚
 	for {
@@ -98,10 +90,10 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		if latestTrace == nil {
 			break //冷启动
 		}
-
-		rpcHeader, err := e.client.HeaderByNumber(ctx, big.NewInt(latestTrace.BlockNumber))
+		// [V2升级] 自动重试获取区块头
+		rpcHeader, err := e.getHeaderByNumber(ctx, latestTrace.BlockNumber)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to fetch header for reorg check: %w", err)
 		}
 
 		if rpcHeader.Hash().Hex() == latestTrace.BlockHash {
@@ -161,11 +153,12 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			},
 		}
 
-		logs, err := e.client.FilterLogs(ctx, query)
+		// [V2升级] 带有熔断容灾的日志抓取
+		logs, err := e.fetchLogs(ctx, query)
 		if err != nil {
 			return err
 		}
-		// 🛑 新增拦截：如果网络请求期间按了 Ctrl+C，直接丢弃这些日志，不进数据库！
+
 		if ctx.Err() != nil {
 			e.logger.Info("sync canceled before db transaction, aborting")
 			return ctx.Err()
@@ -223,17 +216,17 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 				TokenAddress: vLog.Address.Hex(),
 			}
 
-			insertErr := e.models.TransferEvents.InsertTx(ctx, tx, event)
-			if insertErr != nil {
-				e.logger.Error("failed to insert transactional transfer event, aborting batch", "tx_hash", event.TxHash, "error", insertErr)
+			if insertErr := e.models.TransferEvents.InsertTx(ctx, tx, event); insertErr != nil {
+				e.logger.Error("failed to insert transactional event", "tx_hash", event.TxHash, "error", insertErr)
 				return insertErr
 			}
 			pendingPushEvents = append(pendingPushEvents, event)
 		}
 
-		targetHeader, err := e.client.HeaderByNumber(ctx, big.NewInt(toBlock))
+		// [V2升级] 自动重试获取目标区块头
+		targetHeader, err := e.getHeaderByNumber(ctx, toBlock)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to fetch target block header: %w", err)
 		}
 
 		// 更新区块游标
@@ -243,15 +236,13 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 			ParentHash:  targetHeader.ParentHash.Hex(),
 		}
 
-		traceErr := e.models.BlockTraces.InsertTx(ctx, tx, trace)
-		if traceErr != nil {
-			e.logger.Error("failed to update block trace cursor, aborting batch", "block_number", toBlock, "error", traceErr)
+		if traceErr := e.models.BlockTraces.InsertTx(ctx, tx, trace); traceErr != nil {
+			e.logger.Error("failed to update block trace cursor", "block_number", toBlock, "error", traceErr)
 			return traceErr
 		}
 
 		// 3.事务提交
-		err = tx.Commit()
-		if err != nil {
+		if err = tx.Commit(); err != nil {
 			return err
 		}
 
@@ -262,4 +253,54 @@ func (e *Engine) syncBlocks(ctx context.Context) error {
 		}
 	}
 	return nil
+}
+
+// =========================================================================
+// RPC 辅助方法 (Let's Go Further 风格封装：隔离复杂性，内置超时与重试)
+// =========================================================================
+
+func (e *Engine) getLatestHeight(ctx context.Context) (int64, error) {
+	var height int64
+	err := e.nodeManager.ExecuteWithRetry(func(client *ethclient.Client) error {
+		timeoutCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+		defer cancel()
+		header, err := client.HeaderByNumber(timeoutCtx, nil)
+		if err != nil {
+			return err
+		}
+		height = header.Number.Int64()
+		return nil
+	})
+	return height, err
+}
+
+func (e *Engine) getHeaderByNumber(ctx context.Context, blockNumber int64) (*types.Header, error) {
+	var targetHeader *types.Header
+	err := e.nodeManager.ExecuteWithRetry(func(client *ethclient.Client) error {
+		timeoutCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+		defer cancel()
+		header, err := client.HeaderByNumber(timeoutCtx, big.NewInt(blockNumber))
+		if err != nil {
+			return err
+		}
+		targetHeader = header
+		return nil
+	})
+	return targetHeader, err
+}
+
+func (e *Engine) fetchLogs(ctx context.Context, query ethereum.FilterQuery) ([]types.Log, error) {
+	var logs []types.Log
+	err := e.nodeManager.ExecuteWithRetry(func(client *ethclient.Client) error {
+		// 查询日志通常比较耗时，这里给了 10 秒超时
+		timeoutCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+		defer cancel()
+		fetchedLogs, err := client.FilterLogs(timeoutCtx, query)
+		if err != nil {
+			return err
+		}
+		logs = fetchedLogs
+		return nil
+	})
+	return logs, err
 }
