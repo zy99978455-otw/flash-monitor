@@ -52,7 +52,15 @@ docker compose up -d --build
 ## 架构演进路线（Roadmap）
 为了保持 V1 版本的极致轻量与纯粹，以下功能已完成架构预留，计划于后续版本接入：
 
-* [x] V1.0: ETH 主网单节点监听 (Infura)、链重组防御、SSE 无锁推送、Docker 内存调优。
-* [ ] V2.0: 引入 NodeManager 实现多节点 RPC 容灾与指数退避重试，解决底层数据源单点故障。
-* [ ] V2.1: 引入 Redis 实现历史数据缓存与分布式集群锁，支持多实例横向扩展。
-* [ ] V3.0: 接入 Prometheus + Grafana 体系，实现系统指标的可视化监控观测。
+- [x] **V1.0: 基础设施 (Foundation)**
+  以太坊主网单节点扫链、同步日志提取、无锁 SSE 实时流推送以及基础 Docker 配置。
+- [x] **V2.0: 高可用与容灾 (High Availability & Resilience)**
+  引入 `NodeManager` 实现多节点 RPC 故障转移、指数退避重试机制以及原子级的优雅停机，彻底消除单点故障 (SPOF)。
+- [ ] **V2.1: 状态与准确性守护 (State & Accuracy Guard)**
+  实现持久化的断点续传 (Progress Checkpointing) 与延迟确认逻辑，硬核防御链上区块重组 (Reorgs)，确保数据绝对干净。
+- [ ] **V2.2: 数据变现与 API 层 (Data Monetization & API Layer)**
+  开发 RESTful 接口 (`/api/v1/whales`) 提供头部巨鲸交易查询，并通过 `/api/v1/health` 暴露 `NodeManager` 的节点健康度与延迟监控数据。
+- [ ] **V3.0: 扩展性与架构重构 (Scalability & Architecture)**
+  使用解耦的回调架构 (Callback Architecture) 重构扫链引擎，引入 Goroutine 协程池 (Worker Pool) 实现极高吞吐量的并发区块解析。
+- [ ] **V4.0: 分布式运维 (Distributed Operations)**
+  引入 Redis 实现集群分布式锁 (支持多实例水平扩展)，并部署 Prometheus + Grafana 栈以获得企业级可观测性。
